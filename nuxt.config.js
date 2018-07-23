@@ -46,5 +46,8 @@ module.exports = {
   },
   generate: {
     dir: 'public'
+  },
+ router: {
+    base: process.env.BASE_PATH || '/'
   }
 }

@@ -8,6 +8,8 @@ cache:
     - node_modules/
 
 pages:
+  variables:
+    BASE_PATH: "/zakupki/"
   script:
     - npm run generate
   artifacts:
