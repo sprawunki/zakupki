@@ -28,6 +28,9 @@ module.exports = {
   plugins: [
     { src: '~/plugins/vue-material' }
   ],
+  modules: [
+      '@nuxtjs/pwa',
+  ],
   build: {
     /*
     ** Run ESLint on save
