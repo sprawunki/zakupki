@@ -1,8 +1,4 @@
 import Vuex from 'vuex'
-import VuexPersistence from 'vuex-persist'
-
-const vuexLocal = new VuexPersistence({
-})
 
 export default () => {
   return new Vuex.Store({
@@ -37,7 +33,6 @@ export default () => {
       removeItem (context, payload) {
         context.commit('removeItem', payload)
       }
-    },
-    plugins: [vuexLocal.plugin]
+    }
   })
 }

@@ -3,7 +3,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'zakupki-material',
+    title: 'Zakupki',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -26,7 +26,8 @@ module.exports = {
     { src: '~/assets/theme.scss', lang: 'scss' } // include vue-material theme engine
   ],
   plugins: [
-    { src: '~/plugins/vue-material' }
+    { src: '~/plugins/vue-material' },
+    { src: '~/plugins/localStorage.js', ssr: false }
   ],
   modules: [
     '@nuxtjs/pwa'

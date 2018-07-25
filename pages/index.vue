@@ -19,12 +19,18 @@
           <md-icon>cached</md-icon>
         </md-button>
       </md-card-actions>//-->
+
+      <md-snackbar md-position="center" :md-duration="alertDuration" :md-active.sync="error" md-persistent>
+        <span>Connection error.</span>
+        <md-button class="md-primary" @click="showSnackbar = false">Close</md-button>
+      </md-snackbar>
     </md-card>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ShoppingList',
@@ -55,6 +61,10 @@ export default {
       .get('http://192.168.0.100:4000/graphql?query=%7B%0A%09shoppinglist%20%7B%0A%20%20%20%20amount%0A%20%20%20%20product%20%7B%0A%20%20%20%20%20%20name%0A%20%20%20%20%20%20stock%20%7B%0A%20%20%20%20%20%20%20%20purchase_unit%0A%20%20%20%20%20%20%20%20unit%0A%20%20%20%20%20%20%20%20amount%0A%20%20%20%20%20%20%20%20min_stock_amount%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%09%7D%0A%7D%0A')
       .then(
         response => {
+          this.$store.state.shoppinglist.forEach((item) => {
+            this.removeItem(item)
+          })
+
           response.data.data.shoppinglist.forEach((item) => {
             this.addItem(item)
           })
@@ -68,7 +78,10 @@ export default {
           console.error(error)
         }
       )
-  }
+  },
+  computed: mapState({
+    shoppinglist: state => this.$store.state.shoppinglist
+  })
 }
 </script>
 

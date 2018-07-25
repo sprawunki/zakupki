@@ -17,7 +17,7 @@
     "axios": "^0.18.0",
     "nuxt": "^1.0.0",
     "vue-material": "latest",
-    "vuex-persist": "^1.4.3"
+    "vuex-persistedstate": "^2.5.4"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
