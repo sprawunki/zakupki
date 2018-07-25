@@ -29,7 +29,7 @@ module.exports = {
     { src: '~/plugins/vue-material' }
   ],
   modules: [
-      '@nuxtjs/pwa',
+    '@nuxtjs/pwa'
   ],
   build: {
     /*
@@ -50,7 +50,17 @@ module.exports = {
   generate: {
     dir: 'public'
   },
- router: {
+  router: {
     base: process.env.BASE_PATH || '/'
+  },
+  workbox: {
+    runtimeCaching: [
+      {
+        urlPattern: 'http://192.168.0.100:4000/.*',
+        handler: 'cacheFirst',
+        method: 'GET',
+        strategyOptions: {cacheableResponse: {statuses: [0, 200]}}
+      }
+    ]
   }
 }
