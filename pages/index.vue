@@ -14,27 +14,23 @@
     </md-app-toolbar>
 
     <md-app-content>
-      <md-card class="md-layout-item">    <md-progress-bar class="progress" md-mode="query" v-if="loading"></md-progress-bar>
-        <md-card-header>
-          <div class="md-title">Lista</div>
-        </md-card-header>
-        <md-card-content>
-          <md-list>
-            <md-list-item class="md-triple-line" v-for="item in $store.state.shoppinglist" :key="item.id">
-              <md-checkbox v-model="item.inCart" />
-              <span class="md-list-item-text">{{ item.product.name }}</span>
-              <span class="md-caption">{{ item.amount }} {{ item.product.purchaseUnit.name }}</span>
-            </md-list-item>
-          </md-list>
-        </md-card-content>
-        <md-card-actions>
-        </md-card-actions>
+      <md-progress-bar class="progress" md-mode="query" v-if="loading"></md-progress-bar>
+      <md-list>
+        <md-subheader>Lista</md-subheader>
 
-        <md-snackbar md-position="center" :md-duration="alertDuration" :md-active.sync="error" md-persistent>
-          <span>{{ errorMessage }}</span>
-          <md-button class="md-primary" @click="showSnackbar = false">Close</md-button>
-        </md-snackbar>
-      </md-card>
+        <md-list-item class="md-triple-line" v-for="item in $store.state.shoppinglist" :key="item.id">
+          <md-checkbox v-model="item.inCart" />
+          <div class="md-list-item-text">
+            <span>{{ item.product.name }}</span>
+            <span class="md-caption">{{ item.amount }} {{ item.product.purchaseUnit.name }}</span>
+          </div>
+        </md-list-item>
+      </md-list>
+
+      <md-snackbar md-position="center" :md-duration="alertDuration" :md-active.sync="error" md-persistent>
+        <span>{{ errorMessage }}</span>
+        <md-button class="md-primary" @click="showSnackbar = false">Close</md-button>
+      </md-snackbar>
     </md-app-content>
   </md-app>
 </template>
@@ -108,13 +104,3 @@ export default {
   })
 }
 </script>
-
-<style lang="scss" scoped>
-  // .progress {
-  //   position: fixed;
-  //   top: 0;
-  //   right: 0;
-  //   left: 0;
-  //   z-index: 1;
-  // }
-</style>
