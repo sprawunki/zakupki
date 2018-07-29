@@ -1,31 +1,42 @@
 <template>
-  <div>
-    <md-card>
-      <md-card-header>
-        <md-progress-bar class="progress" md-mode="query" v-if="loading"></md-progress-bar>
-        <div class="md-title">Zakupki</div>
-      </md-card-header>
-      <md-card-content>
-        <md-list>
-          <md-list-item class="md-triple-line" v-for="item in $store.state.shoppinglist" :key="item.id">
-            <md-checkbox v-model="item.inCart" />
-            <span class="md-list-item-text">{{ item.product.name }}</span>
-            <span class="md-caption">{{ item.amount }} {{ item.product.stock.purchase_unit }}</span>
-          </md-list-item>
-        </md-list>
-      </md-card-content>
-      <!--<md-card-actions>
-        <md-button class="md-mini md-plain md-fab-bottom-right">
-          <md-icon>cached</md-icon>
-        </md-button>
-      </md-card-actions>//-->
 
-      <md-snackbar md-position="center" :md-duration="alertDuration" :md-active.sync="error" md-persistent>
-        <span>Connection error.</span>
-        <md-button class="md-primary" @click="showSnackbar = false">Close</md-button>
-      </md-snackbar>
-    </md-card>
-  </div>
+  <md-app>
+    <md-app-toolbar class="md-dense">
+      <div class="md-toolbar-row">
+        <span class="md-title">Zakupki</span>
+
+        <div class="md-toolbar-section-end">
+          <md-button class="md-icon-button" to="/login">
+            <md-icon>more_vert</md-icon>
+          </md-button>
+        </div>
+      </div>
+    </md-app-toolbar>
+
+    <md-app-content>
+      <md-card class="md-layout-item">    <md-progress-bar class="progress" md-mode="query" v-if="loading"></md-progress-bar>
+        <md-card-header>
+          <div class="md-title">Lista</div>
+        </md-card-header>
+        <md-card-content>
+          <md-list>
+            <md-list-item class="md-triple-line" v-for="item in $store.state.shoppinglist" :key="item.id">
+              <md-checkbox v-model="item.inCart" />
+              <span class="md-list-item-text">{{ item.product.name }}</span>
+              <span class="md-caption">{{ item.amount }} {{ item.product.purchaseUnit.name }}</span>
+            </md-list-item>
+          </md-list>
+        </md-card-content>
+        <md-card-actions>
+        </md-card-actions>
+
+        <md-snackbar md-position="center" :md-duration="alertDuration" :md-active.sync="error" md-persistent>
+          <span>{{ errorMessage }}</span>
+          <md-button class="md-primary" @click="showSnackbar = false">Close</md-button>
+        </md-snackbar>
+      </md-card>
+    </md-app-content>
+  </md-app>
 </template>
 
 <script>
@@ -38,7 +49,8 @@ export default {
     return {
       loading: false,
       error: false,
-      alertDuration: 5000
+      alertDuration: 5000,
+      errorMessage: ''
     }
   },
   methods: {
@@ -57,15 +69,26 @@ export default {
   },
   created () {
     this.loading = true
+    let tokens = this.$store.state.token
+    let query = '{items {amount product {name purchaseUnit {name}}}}'
+    let q = JSON.stringify(
+      {
+        query: query,
+        tokens: tokens
+      }
+    )
     axios
-      .get('http://192.168.0.100:4000/graphql?query=%7B%0A%09shoppinglist%20%7B%0A%20%20%20%20amount%0A%20%20%20%20product%20%7B%0A%20%20%20%20%20%20name%0A%20%20%20%20%20%20stock%20%7B%0A%20%20%20%20%20%20%20%20purchase_unit%0A%20%20%20%20%20%20%20%20unit%0A%20%20%20%20%20%20%20%20amount%0A%20%20%20%20%20%20%20%20min_stock_amount%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%09%7D%0A%7D%0A')
+      .get('https://api.lewkowi.cz/?q=' + encodeURIComponent(q))
       .then(
         response => {
+          if (response.data.errors) {
+            throw response.data.errors[0].message
+          }
+
           this.$store.state.shoppinglist.forEach((item) => {
             this.removeItem(item)
           })
-
-          response.data.data.shoppinglist.forEach((item) => {
+          response.data.data.items.forEach((item) => {
             this.addItem(item)
           })
           this.loading = false
@@ -75,7 +98,8 @@ export default {
         (error) => {
           this.loading = false
           this.error = true
-          console.error(error)
+          this.errorMessage = error
+          console.dir(this.errorMessage)
         }
       )
   },
@@ -86,20 +110,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @media screen and (min-width: 481px) {
-    .md-card {
-      max-width: 480px;
-      margin: 1em auto;
-    }
-  }
-  .progress {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1;
-  }
-  .refresh {
-    z-index: 10;
-  }
+  // .progress {
+  //   position: fixed;
+  //   top: 0;
+  //   right: 0;
+  //   left: 0;
+  //   z-index: 1;
+  // }
 </style>

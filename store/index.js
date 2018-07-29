@@ -3,7 +3,10 @@ import Vuex from 'vuex'
 export default () => {
   return new Vuex.Store({
     state: {
-      shoppinglist: []
+      shoppinglist: [],
+      token: {
+        grocy: ''
+      }
     },
     mutations: {
       addItem (state, payload) {
@@ -14,6 +17,15 @@ export default () => {
             t.product.name === thing.product.name
           ))
         )
+
+        state.shoppinglist = state.shoppinglist.sort(
+          (a, b) => {
+            var x = a.product.name.toLowerCase()
+            var y = b.product.name.toLowerCase()
+            return x < y ? -1 : x > y ? 1 : 0
+          }
+        )
+
         return state
       },
       removeItem (state, payload) {
@@ -24,6 +36,10 @@ export default () => {
           ))
         )
         return state
+      },
+      setGrocyToken (state, payload) {
+        state.token.grocy = payload
+        return state
       }
     },
     actions: {
@@ -32,6 +48,9 @@ export default () => {
       },
       removeItem (context, payload) {
         context.commit('removeItem', payload)
+      },
+      setGrocyToken (context, payload) {
+        context.commit('setGrocyToken', payload)
       }
     }
   })
