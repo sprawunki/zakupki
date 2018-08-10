@@ -1,19 +1,7 @@
 <template>
 
-  <md-app>
-    <md-app-toolbar class="md-dense">
-      <div class="md-toolbar-row">
-        <span class="md-title">Zakupki</span>
-
-        <div class="md-toolbar-section-end">
-          <md-button class="md-icon-button" to="/login">
-            <md-icon>more_vert</md-icon>
-          </md-button>
-        </div>
-      </div>
-    </md-app-toolbar>
-
-    <md-app-content>
+  <div>
+    <md-content>
       <form novalidate class="md-layout">
         <md-card class="md-layout-item">
           <md-card-header>
@@ -36,8 +24,8 @@
           </md-card-actions>
         </md-card>
       </form>
-    </md-app-content>
-  </md-app>
+    </md-content>
+  </div>
 </template>
 
 <script>
