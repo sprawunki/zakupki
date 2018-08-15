@@ -1,6 +1,6 @@
 <template>
   <md-content class="main-content md-layout">
-    <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-33 md-large-size-25" v-for="recipe in sortByScore($store.state.recipes)" :key="recipe.id">
+    <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-33 md-large-size-25" v-for="recipe in $store.state.recipes" :key="recipe.id">
       <md-card>
         <md-card-header>
           <span class="md-title"><md-icon v-if="recipe.score > 0">priority_high</md-icon>{{ recipe.name }}</span>
@@ -44,15 +44,6 @@ export default {
     sortByName (data) {
       return data.sort((a, b) => a.name > b.name)
     },
-    sortByScore (data) {
-      return data.sort((a, b) => {
-        if (a.score === b.score) {
-          return a.name > b.name
-        }
-
-        return a.score < b.score
-      })
-    },
     sortByProductPriority (data) {
       return data.sort((a, b) => {
         if (a.product.priority === b.product.priority) {
@@ -62,16 +53,10 @@ export default {
         return a.product.priority < b.product.priority
       })
     },
-    addRecipe (item) {
+    updateRecipeList (collection) {
       this.$store.dispatch({
-        type: 'addRecipe',
-        item: item
-      })
-    },
-    removeRecipe (item) {
-      this.$store.dispatch({
-        type: 'removeRecipe',
-        item: item
+        type: 'updateRecipeList',
+        item: collection
       })
     },
     load () {
@@ -92,15 +77,9 @@ export default {
               throw response.data.errors[0].message
             }
 
-            this.$store.state.recipes.forEach((recipe) => {
-              this.removeRecipe(recipe)
-            })
+            this.updateRecipeList(response.data.data.recipes)
 
-            response.data.data.recipes.forEach((recipe) => {
-              this.addRecipe(recipe)
-            })
-
-            // this.loading = false
+            this.loading = false
             this.error = false
           }
         ).catch(

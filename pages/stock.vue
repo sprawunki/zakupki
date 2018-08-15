@@ -73,28 +73,10 @@ export default {
         return a.priority < b.priority
       })
     },
-    addItem (item) {
+    updateStockList (collection) {
       this.$store.dispatch({
-        type: 'addItem',
-        item: item
-      })
-    },
-    removeItem (item) {
-      this.$store.dispatch({
-        type: 'removeItem',
-        item: item
-      })
-    },
-    addStockItem (item) {
-      this.$store.dispatch({
-        type: 'addStockItem',
-        item: item
-      })
-    },
-    removeStockItem (item) {
-      this.$store.dispatch({
-        type: 'removeStockItem',
-        item: item
+        type: 'updateStockList',
+        item: collection
       })
     },
     load () {
@@ -115,13 +97,7 @@ export default {
               throw response.data.errors[0].message
             }
 
-            this.$store.state.stock.forEach((location) => {
-              this.removeStockItem(location)
-            })
-
-            response.data.data.locations.forEach((location) => {
-              this.addStockItem(location)
-            })
+            this.updateStockList(response.data.data.locations)
 
             this.loading = false
             this.error = false

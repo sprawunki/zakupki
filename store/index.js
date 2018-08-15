@@ -14,7 +14,7 @@ export default () => {
       }
     },
     mutations: {
-      updateList (state, payload) {
+      updateShoppingList (state, payload) {
         let newState = state
         newState.shoppinglist = payload.item.sort(
           (a, b) => {
@@ -23,43 +23,50 @@ export default () => {
             return x < y ? -1 : x > y ? 1 : 0
           }
         )
+
         Object.assign(state, newState)
       },
-      addItem (state, payload) {
-        state.shoppinglist.unshift(payload.item)
-        state.shoppinglist = state.shoppinglist.filter((thing, index, self) =>
-          index === self.findIndex((t) => (
-            t.product.name === thing.product.name
-          ))
-        )
-
-        state.shoppinglist = state.shoppinglist.sort(
+      updateStockList (state, payload) {
+        let newState = state
+        newState.stock = payload.item.sort(
           (a, b) => {
-            var x = a.product.name.toLowerCase()
-            var y = b.product.name.toLowerCase()
+            var x = a.location.name.toLowerCase()
+            var y = b.location.name.toLowerCase()
             return x < y ? -1 : x > y ? 1 : 0
           }
         )
 
-        return state
-      },
-      removeItem (state, payload) {
-        state.shoppinglist = state.shoppinglist.filter((thing, index, self) =>
-          index !== self.findIndex(() => (
-            payload.item.product.name === thing.product.name
-          ))
-        )
-        return state
-      },
-      addRecipe (state, payload) {
-        state.recipes.unshift(payload.item)
-        state.recipes = state.recipes.filter((thing, index, self) =>
-          index === self.findIndex((t) => (
-            t.name === thing.name
-          ))
-        )
+        newState.stock.map((location) => {
+          return location.products.map((item) => {
+            let bestBeforeThreshold = moment().add(5, 'days')
 
-        state.recipes.map((recipe) => {
+            item.priority = 0
+            if (item.minStockAmount > 0) {
+              item.priority += 2
+            }
+            if (item.stockLevel === 0) {
+              item.priority += 3
+            }
+            if (item.stockLevel < item.minStockAmount) {
+              item.priority += 5
+              item.lowStock = true
+            }
+            if (moment(item.bestBefore).isBefore(bestBeforeThreshold)) {
+              item.priority += 1
+              item.expiresSoon = true
+            }
+            return item
+          })
+        })
+
+        Object.assign(state, newState)
+      },
+      updateRecipeList (state, payload) {
+        let newState = state
+
+        newState.recipes = payload.item
+
+        newState.recipes.map((recipe) => {
           let bestBeforeThreshold = moment().add(5, 'days')
 
           recipe.score = 0
@@ -83,54 +90,15 @@ export default () => {
           return recipe
         })
 
-        return state
-      },
-      removeRecipe (state, payload) {
-        state.recipes = state.recipes.filter((thing, index, self) =>
-          index !== self.findIndex(() => (
-            payload.item.name === thing.name
-          ))
-        )
-        return state
-      },
-      addStockItem (state, payload) {
-        payload.item.products.map((item) => {
-          let bestBeforeThreshold = moment().add(5, 'days')
+        newState.recipes.sort((a, b) => {
+          if (a.score === b.score) {
+            return a.name > b.name
+          }
 
-          item.priority = 0
-          if (item.minStockAmount > 0) {
-            item.priority += 2
-          }
-          if (item.stockLevel === 0) {
-            item.priority += 3
-          }
-          if (item.stockLevel < item.minStockAmount) {
-            item.priority += 5
-            item.lowStock = true
-          }
-          if (moment(item.bestBefore).isBefore(bestBeforeThreshold)) {
-            item.priority += 1
-            item.expiresSoon = true
-          }
-          return item
+          return a.score < b.score
         })
 
-        state.stock.unshift(payload.item)
-        state.stock = state.stock.filter((thing, index, self) =>
-          index === self.findIndex((t) => (
-            t.name === thing.name
-          ))
-        )
-
-        return state
-      },
-      removeStockItem (state, payload) {
-        state.stock = state.stock.filter((thing, index, self) =>
-          index !== self.findIndex(() => (
-            payload.item.name === thing.name
-          ))
-        )
-        return state
+        Object.assign(state, newState)
       },
       setGrocyToken (state, payload) {
         state.token.grocy = payload
@@ -138,26 +106,14 @@ export default () => {
       }
     },
     actions: {
-      updateList (context, payload) {
-        context.commit('updateList', payload)
+      updateShoppingList (context, payload) {
+        context.commit('updateShoppingList', payload)
       },
-      addItem (context, payload) {
-        context.commit('addItem', payload)
+      updateRecipeList (context, payload) {
+        context.commit('updateRecipeList', payload)
       },
-      removeItem (context, payload) {
-        context.commit('removeItem', payload)
-      },
-      addRecipe (context, payload) {
-        context.commit('addRecipe', payload)
-      },
-      removeRecipe (context, payload) {
-        context.commit('removeRecipe', payload)
-      },
-      addStockItem (context, payload) {
-        context.commit('addStockItem', payload)
-      },
-      removeStockItem (context, payload) {
-        context.commit('removeStockItem', payload)
+      updateStockList (context, payload) {
+        context.commit('updateStockList', payload)
       },
       setGrocyToken (context, payload) {
         context.commit('setGrocyToken', payload)

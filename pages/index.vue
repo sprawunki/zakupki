@@ -29,31 +29,20 @@ export default {
     return {
       error: false,
       alertDuration: 5000,
-      errorMessage: ''
+      errorMessage: '',
+      loading: false
     }
   },
   methods: {
-    updateList (collection) {
+    updateShoppingList (collection) {
       this.$store.dispatch({
-        type: 'updateList',
+        type: 'updateShoppingList',
         item: collection
-      })
-    },
-    addItem (item) {
-      this.$store.dispatch({
-        type: 'addItem',
-        item: item
-      })
-    },
-    removeItem (item) {
-      this.$store.dispatch({
-        type: 'removeItem',
-        item: item
       })
     },
     loadData () {
       this.$store.state.refresh = false
-      this.$store.state.loading = true
+      this.loading = true
       let tokens = this.$store.state.token
       let query = '{items {amount product {name purchaseUnit {name}}}}'
       let q = JSON.stringify(
@@ -70,15 +59,15 @@ export default {
               throw response.data.errors[0].message
             }
 
-            this.updateList(response.data.data.items)
+            this.updateShoppingList(response.data.data.items)
 
-            this.$store.state.loading = false
+            this.loading = false
             this.error = false
             this.$store.state.refresh = true
           }
         ).catch(
           (error) => {
-            this.$store.state.loading = false
+            this.loading = false
             this.error = true
             this.errorMessage = error
           }
