@@ -87,10 +87,6 @@ export default {
   },
   created () {
     this.loadData()
-
-    setInterval(function () {
-      this.loadData()
-    }.bind(this), 60000)
   },
   computed: mapState({
     shoppinglist: state => this.$store.state.shoppinglist
