@@ -1,10 +1,26 @@
 <template>
-  <div>
+  <div class="app">
+    <toolbar/>
+
     <nuxt/>
+
+    <navbar/>
   </div>
 </template>
 
-<style>
+<script>
+import Toolbar from '~/components/Toolbar.vue'
+import Navbar from '~/components/Navbar.vue'
+
+export default {
+  components: {
+    Toolbar,
+    Navbar
+  }
+}
+</script>
+
+<style lang="scss">
 html {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
@@ -14,6 +30,11 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+  height: 100%;
+}
+
+body {
+  height: 100%;
 }
 
 *, *:before, *:after {
@@ -48,5 +69,19 @@ html {
 .button--grey:hover {
   color: #fff;
   background-color: #35495e;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  overflow-y: scroll;
+  position: relative;
 }
 </style>

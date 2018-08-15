@@ -36,7 +36,7 @@ module.exports = {
     /*
     ** Run ESLint on save
     */
-    vendor: ['vue-material'],
+    vendor: ['vue-material', 'axios'],
     extend (config, { isDev, isClient }) {
       if (isDev && isClient) {
         config.module.rules.push({
@@ -53,15 +53,5 @@ module.exports = {
   },
   router: {
     base: process.env.BASE_PATH || '/'
-  },
-  workbox: {
-    runtimeCaching: [
-      {
-        urlPattern: 'http://192.168.0.100:4000/.*',
-        handler: 'cacheFirst',
-        method: 'GET',
-        strategyOptions: {cacheableResponse: {statuses: [0, 200]}}
-      }
-    ]
   }
 }
