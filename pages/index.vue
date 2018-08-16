@@ -14,7 +14,7 @@
 
     <md-snackbar md-position="center" :md-duration="alertDuration" :md-active.sync="error" md-persistent>
       <span>{{ errorMessage }}</span>
-      <md-button class="md-primary" @click="showSnackbar = false">Close</md-button>
+      <md-button class="md-primary" @click="error = false">Close</md-button>
     </md-snackbar>
   </md-content>
 </template>
@@ -28,7 +28,7 @@ export default {
   data: function () {
     return {
       error: false,
-      alertDuration: 5000,
+      alertDuration: 10000,
       errorMessage: '',
       loading: false
     }
