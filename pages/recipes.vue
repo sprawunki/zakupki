@@ -8,7 +8,7 @@
         <md-card-content>
           <md-list>
             <md-subheader>Składniki</md-subheader>
-            <md-list-item v-for="item in sortByProductPriority(recipe.ingredients)" :key="item.id" :class="{ 'md-inset': !item.product.expiresSoon }">
+            <md-list-item v-for="item in recipe.ingredients" :key="item.id" :class="{ 'md-inset': !item.product.expiresSoon }">
               <md-icon v-if="item.product.expiresSoon">warning</md-icon>
               <del v-if="item.product.stockLevel < item.amount" class="md-list-item-text ">{{ item.product.name }}</del>
               <span v-if="item.product.stockLevel >= item.amount" class="md-list-item-text ">{{ item.product.name }}</span>
@@ -41,18 +41,6 @@ export default {
     }
   },
   methods: {
-    sortByName (data) {
-      return data.sort((a, b) => a.name > b.name)
-    },
-    sortByProductPriority (data) {
-      return data.sort((a, b) => {
-        if (a.product.priority === b.product.priority) {
-          return a.product.name > b.product.name
-        }
-
-        return a.product.priority < b.product.priority
-      })
-    },
     updateRecipeList (collection) {
       this.$store.dispatch({
         type: 'updateRecipeList',
@@ -84,7 +72,7 @@ export default {
           }
         ).catch(
           (error) => {
-            // this.loading = false
+            this.loading = false
             this.error = true
             this.errorMessage = error
           }

@@ -1,6 +1,6 @@
 <template>
   <md-content class="main-content md-layout">
-    <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-33 md-large-size-25" v-for="location in this.sortByName($store.state.stock)" :key="location.id">
+    <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-33 md-large-size-25" v-for="location in $store.state.stock" :key="location.id">
       <md-card>
         <md-card-header>
           <span class="md-title">
@@ -12,7 +12,7 @@
         <md-card-content>
           <md-list>
             <md-subheader>Przede wszystkim</md-subheader>
-            <md-list-item v-for="item in sortByPriority(location.products)" :key="item.id" v-if="item.minStockAmount > 0"  :class="{ 'md-inset': !item.lowStock }">
+            <md-list-item v-for="item in location.products" :key="item.id" v-if="item.minStockAmount > 0"  :class="{ 'md-inset': !item.lowStock }">
               <md-icon v-if="item.lowStock">error</md-icon>
               <del v-if="item.stockLevel == 0" class="md-list-item-text">{{ item.name }}</del>
               <span v-if="item.stockLevel > 0" class="md-list-item-text">{{ item.name }}</span>
@@ -22,11 +22,11 @@
 
           <md-list>
             <md-subheader>Poza tym</md-subheader>
-            <md-list-item v-for="item in sortByPriority(location.products)" :key="item.id" v-if="item.minStockAmount == 0 && item.stockLevel > 0" :class="{ 'md-inset': !item.expiresSoon }">
+            <md-list-item v-for="item in location.products" :key="item.id" v-if="item.minStockAmount == 0 && item.stockLevel > 0" :class="{ 'md-inset': !item.expiresSoon }">
               <md-icon v-if="item.expiresSoon">warning</md-icon>
               <del v-if="item.stockLevel == 0" class="md-list-item-text">{{ item.name }}</del>
               <span v-if="item.stockLevel > 0" class="md-list-item-text">{{ item.name }}</span>
-              <span v-if="item.stockLevel > 0" class="md-caption">{{ item.stockLevel }} {{ item.stockUnit.name }} <md-icon v-if="!item.expiresSoon">check</md-icon><md-icon v-if="item.expiresSoon">warning</md-icon></span>
+              <span v-if="item.stockLevel > 0" class="md-caption">{{ item.stockLevel }} {{ item.stockUnit.name }}</span>
             </md-list-item>
           </md-list>
         </md-card-content>
@@ -60,18 +60,6 @@ export default {
         (acc, cur) => (acc || cur.stockLevel < cur.minStockAmount),
         false
       )
-    },
-    sortByName (data) {
-      return data.sort((a, b) => a.name > b.name)
-    },
-    sortByPriority (data) {
-      return data.sort((a, b) => {
-        if (a.priority === b.priority) {
-          return a.name > b.name
-        }
-
-        return a.priority < b.priority
-      })
     },
     updateStockList (collection) {
       this.$store.dispatch({

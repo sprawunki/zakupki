@@ -36,7 +36,10 @@ module.exports = {
     /*
     ** Run ESLint on save
     */
-    vendor: ['vue-material', 'axios'],
+    vendor: [
+      'vue-material',
+      'axios'
+    ],
     extend (config, { isDev, isClient }) {
       if (isDev && isClient) {
         config.module.rules.push({
