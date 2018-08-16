@@ -2,9 +2,11 @@
   <md-content class="main-content">
     <md-empty-state
       v-if="showNotice"
-      md-label="Hey there!"
-      md-description="This is a demo, using the official Grocy demo as backend.">
+      md-icon="info"
+      md-label="You're in the demo mode, you know?"
+      md-description="Go ahead and have a look around!">
       <p>Click on the gear icon in the top right corner of the screen to set the token and see the real data.</p>
+      <p>Learn more about Grocy at <a href="https://grocy.info/" target="_blank" rel=”noopener”>https://grocy.info/</a></p>
     </md-empty-state>
   </md-content>
 </template>
