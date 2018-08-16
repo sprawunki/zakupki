@@ -90,6 +90,6 @@ export default {
 
 <style lang="scss">
 .md-card {
-  margin: 4px;
+  margin: 8px;
 }
 </style>

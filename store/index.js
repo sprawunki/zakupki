@@ -14,7 +14,13 @@ export default () => {
     mutations: {
       updateShoppingList (state, payload) {
         let newState = state
-        newState.shoppinglist = payload.item.sort(
+        newState.shoppinglist = payload.item.filter((item) => {
+          if (item.product) {
+            return item
+          }
+        })
+
+        newState.shoppinglist.sort(
           (a, b) => {
             var x = a.product.name.toLowerCase()
             var y = b.product.name.toLowerCase()
