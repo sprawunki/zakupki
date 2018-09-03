@@ -1,43 +1,47 @@
 <template>
-  <md-content class="main-content md-layout">
-    <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-33 md-large-size-25" v-for="location in $store.state.stock" :key="location.id">
-      <md-card>
-        <md-card-header>
-          <span class="md-title">
-            <md-icon v-if="hasMissingItems(location)">error</md-icon>
-            <md-icon v-if="!hasMissingItems(location)">check</md-icon>
-            <span>{{ location.name }}</span>
-          </span>
-        </md-card-header>
-        <md-card-content>
-          <md-list>
-            <md-subheader>Przede wszystkim</md-subheader>
-            <md-list-item v-for="item in location.products" :key="item.id" v-if="item.minStockAmount > 0"  :class="{ 'md-inset': !item.lowStock }">
-              <md-icon v-if="item.lowStock">error</md-icon>
-              <del v-if="item.stockLevel == 0" class="md-list-item-text">{{ item.name }}</del>
-              <span v-if="item.stockLevel > 0" class="md-list-item-text">{{ item.name }}</span>
-              <span v-if="item.stockLevel > 0" class="md-caption">{{ item.stockLevel }} {{ item.stockUnit.name }} <md-icon v-if="!item.expiresSoon">check</md-icon><md-icon v-if="item.expiresSoon">warning</md-icon></span>
-            </md-list-item>
-          </md-list>
+  <div class="stock">
+    <div
+      class="location"
+      v-for="location in $store.state.stock"
+      :key="location.id"
+      :class="{
+        'has-missing-items': hasMissingItems(location)
+      }"
+    >
+          <div class="title">
+            <h2>{{ location.name }}</h2>
+          </div>
+          <ul class="products">
+            <li
+              class="product"
+              v-for="item in location.products"
+              :key="item.id"
+              v-if="item.stockLevel > 0 || item.minStockAmount > 0"
+              :class="{
+                'expires-soon': item.expiresSoon,
+                'low-stock': item.lowStock
+              }"
+            >
+              <span v-if="item.stockLevel > 0" class="product__amount">{{ item.stockLevel }} {{ item.stockUnit.name }}</span>
+              <span >{{ item.name }}</span>
+            </li>
+          </ul>
 
-          <md-list>
-            <md-subheader>Poza tym</md-subheader>
-            <md-list-item v-for="item in location.products" :key="item.id" v-if="item.minStockAmount == 0 && item.stockLevel > 0" :class="{ 'md-inset': !item.expiresSoon }">
+          <!-- <ul>
+            <li v-for="item in location.products" :key="item.id" v-if="item.minStockAmount == 0 && item.stockLevel > 0" :class="{ 'md-inset': !item.expiresSoon }">
               <md-icon v-if="item.expiresSoon">warning</md-icon>
               <del v-if="item.stockLevel == 0" class="md-list-item-text">{{ item.name }}</del>
               <span v-if="item.stockLevel > 0" class="md-list-item-text">{{ item.name }}</span>
               <span v-if="item.stockLevel > 0" class="md-caption">{{ item.stockLevel }} {{ item.stockUnit.name }}</span>
-            </md-list-item>
-          </md-list>
-        </md-card-content>
-      </md-card>
+            </li>
+          </ul> -->
     </div>
 
     <md-snackbar md-position="center" :md-duration="alertDuration" :md-active.sync="error" md-persistent>
       <span>{{ errorMessage }}</span>
       <md-button class="md-primary" @click="error = false">Close</md-button>
     </md-snackbar>
-  </md-content>
+  </div>
 </template>
 
 <script>
@@ -109,7 +113,78 @@ export default {
 </script>
 
 <style lang="scss">
-.md-card {
-  margin: 8px;
+
+.title {
+  width: 50%;
+  float: left;
+  text-align: right;
+  position: sticky;
+  top: .25em;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 50%;
+    position: absolute;
+    top: -.25em;
+    left: 100%;
+    height: .25em;
+    background: black;
+  }
+}
+.stock {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 360px);
+  overflow: scroll;
+}
+.location {
+  background: #fbae17;
+  padding: .25em;
+  position: relative;
+}
+.has-missing-items {
+  background: #f7772c;
+}
+.low-stock {
+  // background: #546a76;
+  text-decoration: line-through;
+}
+.products {
+  width: 50%;
+  float: left;
+  display: block;
+  list-style: none;
+  margin: 0 0 1.25em;
+  padding: 0 0 0 25%;
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 12.5%;
+    position: absolute;
+    top: -.25em;
+    left: 25%;
+    height: .25em;
+    background: black;
+  }
+}
+.product {
+  position: relative;
+  margin: 0 0 .5em;
+}
+.product__amount {
+  position: absolute;
+  top: 0;
+  right: 100%;
+  display: block;
+  text-align: right;
+  white-space: nowrap;
+  font-weight: 300;
+
+  &::after {
+    content: ' ';
+    white-space: pre;
+  }
 }
 </style>

@@ -1,29 +1,38 @@
 <template>
-  <md-content class="main-content md-layout">
-    <div class="md-layout-item md-xsmall-size-100 md-small-size-50 md-medium-size-33 md-large-size-25" v-for="recipe in $store.state.recipes" :key="recipe.id">
-      <md-card>
-        <md-card-header>
-          <span class="md-title"><md-icon v-if="recipe.score > 0">priority_high</md-icon>{{ recipe.name }}</span>
-        </md-card-header>
-        <md-card-content>
-          <md-list>
-            <md-subheader>Składniki</md-subheader>
-            <md-list-item v-for="item in recipe.ingredients" :key="item.id" :class="{ 'md-inset': !item.product.expiresSoon }">
-              <md-icon v-if="item.product.expiresSoon">warning</md-icon>
-              <del v-if="item.product.stockLevel < item.amount" class="md-list-item-text ">{{ item.product.name }}</del>
-              <span v-if="item.product.stockLevel >= item.amount" class="md-list-item-text ">{{ item.product.name }}</span>
-              <span class="md-caption">{{ item.amount }} {{item.product.stockUnit.name }}</span>
-            </md-list-item>
-          </md-list>
-        </md-card-content>
-      </md-card>
+  <div class="recipes">
+    <div
+      class="recipe"
+      v-for="recipe in $store.state.recipes"
+      :key="recipe.id"
+      :class="{
+        'promoted': recipe.score > 0,
+        'demoted': recipe.score < 0
+      }"
+    >
+        <div class="title">
+          <h2>{{ recipe.name }}</h2>
+        </div>
+        <ul class="ingredients">
+          <li
+            v-for="item in recipe.ingredients"
+            :key="item.id"
+            class="ingredient"
+            :class="{
+              'expires-soon': item.product.expiresSoon,
+              'low-stock': item.product.stockLevel < item.amount
+            }"
+          >
+            <span class="ingredient__amount">{{ item.amount }} {{item.product.stockUnit.name }}</span>
+            <span>{{ item.product.name }}</span>
+          </li>
+        </ul>
     </div>
 
     <md-snackbar md-position="center" :md-duration="alertDuration" :md-active.sync="error" md-persistent>
       <span>{{ errorMessage }}</span>
       <md-button class="md-primary" @click="error = false">Close</md-button>
     </md-snackbar>
-  </md-content>
+  </div>
 </template>
 
 <script>
@@ -89,7 +98,82 @@ export default {
 </script>
 
 <style lang="scss">
-.md-card {
-  margin: 8px;
+.title {
+  width: 50%;
+  float: left;
+  text-align: right;
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 50%;
+    position: absolute;
+    top: -.25em;
+    left: 100%;
+    height: .25em;
+    background: black;
+  }
+}
+.ingredients {
+  width: 50%;
+  float: left;
+  display: block;
+  list-style: none;
+  margin: 0 0 1.25em;
+  padding: 0 0 0 25%;
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 12.5%;
+    position: absolute;
+    top: -.25em;
+    left: 25%;
+    height: .25em;
+    background: black;
+  }
+}
+.ingredient {
+  position: relative;
+  margin: 0 0 .5em;
+}
+.ingredient__amount {
+  position: absolute;
+  top: 0;
+  right: 100%;
+  display: block;
+  text-align: right;
+  white-space: nowrap;
+  font-weight: 300;
+
+  &::after {
+    content: ' ';
+    white-space: pre;
+  }
+}
+.recipes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 360px);
+  overflow: scroll;
+}
+.recipe {
+  background: #fbae17;
+  padding: .25em;
+}
+.expires-soon {
+  // background: #88a0a8;
+  font-weight: 900;
+}
+.low-stock {
+  // background: #546a76;
+  text-decoration: line-through;
+}
+.promoted {
+  background: #f7772c;
+}
+.demoted {
+  background: #dd6464;
 }
 </style>
