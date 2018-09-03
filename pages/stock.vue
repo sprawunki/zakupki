@@ -134,7 +134,7 @@ export default {
 }
 .stock {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 360px);
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   overflow: scroll;
 }
 .location {
@@ -148,6 +148,10 @@ export default {
 .low-stock {
   // background: #546a76;
   text-decoration: line-through;
+}
+.expires-soon {
+  // background: #88a0a8;
+  font-weight: 900;
 }
 .products {
   width: 50%;

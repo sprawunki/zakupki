@@ -101,8 +101,9 @@ export default {
 .title {
   width: 50%;
   float: left;
-  text-align: right;
-  position: relative;
+  text-align: right;;
+  position: sticky;
+  top: .25em;
 
   &::after {
     content: '';
@@ -123,17 +124,6 @@ export default {
   margin: 0 0 1.25em;
   padding: 0 0 0 25%;
   position: relative;
-
-  &::after {
-    content: '';
-    display: block;
-    width: 12.5%;
-    position: absolute;
-    top: -.25em;
-    left: 25%;
-    height: .25em;
-    background: black;
-  }
 }
 .ingredient {
   position: relative;
@@ -155,12 +145,13 @@ export default {
 }
 .recipes {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 360px);
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   overflow: scroll;
 }
 .recipe {
   background: #fbae17;
   padding: .25em;
+  position: relative;
 }
 .expires-soon {
   // background: #88a0a8;
