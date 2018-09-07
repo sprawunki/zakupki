@@ -9,9 +9,7 @@
         'demoted': recipe.score < 0
       }"
     >
-        <div class="title">
-          <h2>{{ recipe.name }}</h2>
-        </div>
+        <h2 class="title">{{ recipe.name }}</h2>
         <ul class="ingredients">
           <li
             v-for="item in recipe.ingredients"
@@ -19,7 +17,8 @@
             class="ingredient"
             :class="{
               'expires-soon': item.product.expiresSoon,
-              'low-stock': item.product.stockLevel < item.amount
+              'low-stock': item.product.stockLevel < item.amount,
+              'out-of-stock': item.product.stockLevel === 0
             }"
           >
             <span class="ingredient__amount">{{ item.amount }} {{item.product.stockUnit.name }}</span>
@@ -97,43 +96,36 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.title {
-  width: 50%;
-  float: left;
-  text-align: right;;
-  position: sticky;
-  top: .25em;
+<style lang="scss" scoped>
+@import "assets/theme.scss";
 
-  &::after {
-    content: '';
-    display: block;
-    width: 50%;
-    position: absolute;
-    top: -.25em;
-    left: 100%;
-    height: .25em;
-    background: black;
-  }
+.title {
+  line-height: 2rem;
+  font-size: 1.6rem;
+  font-weight: 900;
+  margin: .5em;
+  padding: 0;
 }
 .ingredients {
-  width: 50%;
-  float: left;
   display: block;
   list-style: none;
   margin: 0 0 1.25em;
-  padding: 0 0 0 25%;
+  padding: 0;
   position: relative;
 }
 .ingredient {
   position: relative;
-  margin: 0 0 .5em;
+  display: block;
+  font-size: 1rem;
+  margin: .25rem 0 .25rem 34%;
+  padding: 0 .25rem;
 }
 .ingredient__amount {
   position: absolute;
+  display: block;
   top: 0;
   right: 100%;
-  display: block;
+  width: 50%;
   text-align: right;
   white-space: nowrap;
   font-weight: 300;
@@ -147,24 +139,30 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   overflow: scroll;
+  background: $color-base;
+  row-gap: 1px;
 }
 .recipe {
-  background: #fbae17;
+  background: $color-background;
   padding: .25em;
   position: relative;
 }
-.expires-soon {
-  // background: #88a0a8;
-  font-weight: 900;
-}
-.low-stock {
-  // background: #546a76;
-  text-decoration: line-through;
-}
 .promoted {
-  background: #f7772c;
+  background: $color-highlight-background;
+  color: $color-highlight;
 }
 .demoted {
-  background: #dd6464;
+  background: $color-dim-background;
+}
+.low-stock {
+  font-weight: 900;
+}
+.out-of-stock {
+  text-decoration: line-through solid $color-highlight-background;
+}
+.expires-soon {
+  .ingredient__amount::before {
+    content: '➔ ';
+  }
 }
 </style>

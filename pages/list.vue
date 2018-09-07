@@ -1,16 +1,15 @@
 <template>
   <md-content class="main-content">
-    <md-list>
-      <md-subheader>Lista</md-subheader>
-
-      <md-list-item class="md-triple-line" v-for="item in $store.state.shoppinglist" :key="item.id">
-        <md-checkbox v-model="item.inCart" />
-        <div class="md-list-item-text">
-          <span>{{ item.product.name }}</span>
-          <span class="md-caption">{{ item.amount }} {{ item.product.purchaseUnit.name }}</span>
-        </div>
-      </md-list-item>
-    </md-list>
+    <ul class="shopping-list">
+      <shopping-list-item
+        v-for="item in $store.state.shoppinglist"
+        :key="item.id"
+        v-bind:name="item.product.name"
+        v-bind:amount="item.amount"
+        v-bind:unit="item.product.purchaseUnit.name"
+        v-bind:inCart="item.inCart"
+      />
+    </ul>
 
     <md-snackbar md-position="center" :md-duration="alertDuration" :md-active.sync="error" md-persistent>
       <span>{{ errorMessage }}</span>
@@ -22,6 +21,7 @@
 <script>
 import axios from 'axios'
 import { mapState } from 'vuex'
+import ShoppingListItem from '~/components/ShoppingListItem.vue'
 
 export default {
   name: 'ShoppingList',
@@ -32,6 +32,9 @@ export default {
       errorMessage: '',
       loading: false
     }
+  },
+  components: {
+    ShoppingListItem
   },
   methods: {
     updateShoppingList (collection) {
@@ -83,3 +86,13 @@ export default {
   })
 }
 </script>
+
+<style lang="scss" scoped>
+.shopping-list {
+  width: 100%;
+  max-width: 360px;
+  display: block;
+  margin: 1rem auto 1.25rem;
+  padding: 0;
+}
+</style>

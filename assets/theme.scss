@@ -6,3 +6,13 @@
 ));
 
 @import "~vue-material/dist/theme/all"; // Apply the theme
+
+$color-background: #f1f2f0;
+$color-base: #35342f;
+$color-highlight: $color-base;
+$color-highlight-background: #37bbe4;
+$color-dim-background: #e1e0dd;
+
+body {
+  background-color: $color-background;
+}

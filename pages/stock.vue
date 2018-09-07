@@ -8,9 +8,7 @@
         'has-missing-items': hasMissingItems(location)
       }"
     >
-          <div class="title">
-            <h2>{{ location.name }}</h2>
-          </div>
+          <h2 class="title">{{ location.name }}</h2>
           <ul class="products">
             <li
               class="product"
@@ -19,10 +17,12 @@
               v-if="item.stockLevel > 0 || item.minStockAmount > 0"
               :class="{
                 'expires-soon': item.expiresSoon,
-                'low-stock': item.lowStock
+                'low-stock': item.lowStock,
+                'out-of-stock': item.stockLevel === 0
               }"
             >
               <span v-if="item.stockLevel > 0" class="product__amount">{{ item.stockLevel }} {{ item.stockUnit.name }}</span>
+              <span v-if="item.stockLevel == 0" class="product__amount">×</span>
               <span >{{ item.name }}</span>
             </li>
           </ul>
@@ -112,70 +112,36 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@import "assets/theme.scss";
 
 .title {
-  width: 50%;
-  float: left;
-  text-align: right;
-  position: sticky;
-  top: .25em;
-
-  &::after {
-    content: '';
-    display: block;
-    width: 50%;
-    position: absolute;
-    top: -.25em;
-    left: 100%;
-    height: .25em;
-    background: black;
-  }
+  line-height: 2rem;
+  font-size: 1.6rem;
+  font-weight: 900;
+  margin: .5em;
+  padding: 0;
 }
 .stock {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   overflow: scroll;
-}
-.location {
-  background: #fbae17;
-  padding: .25em;
-  position: relative;
-}
-.has-missing-items {
-  background: #f7772c;
-}
-.low-stock {
-  // background: #546a76;
-  text-decoration: line-through;
-}
-.expires-soon {
-  // background: #88a0a8;
-  font-weight: 900;
+  row-gap: 1px;
+  background-color: $color-base;
 }
 .products {
-  width: 50%;
-  float: left;
   display: block;
   list-style: none;
   margin: 0 0 1.25em;
-  padding: 0 0 0 25%;
+  padding: 0;
   position: relative;
-
-  &::after {
-    content: '';
-    display: block;
-    width: 12.5%;
-    position: absolute;
-    top: -.25em;
-    left: 25%;
-    height: .25em;
-    background: black;
-  }
 }
 .product {
   position: relative;
-  margin: 0 0 .5em;
+  display: block;
+  font-size: 1rem;
+  margin: .25rem 0 .25rem 34%;
+  padding: 0 .25rem;
 }
 .product__amount {
   position: absolute;
@@ -185,10 +151,35 @@ export default {
   text-align: right;
   white-space: nowrap;
   font-weight: 300;
+  width: 50%;
 
   &::after {
     content: ' ';
     white-space: pre;
+  }
+}
+.location {
+  background: $color-background;
+  padding: .25em;
+  position: relative;
+}
+.has-missing-items {
+  background: $color-highlight-background;
+  color: $color-highlight;
+}
+.low-stock {
+  font-weight: 900;
+}
+.out-of-stock {
+  text-decoration: line-through solid $color-highlight-background;
+
+  .has-missing-items & {
+    text-decoration: line-through solid $color-base;
+  }
+}
+.expires-soon {
+  .product__amount::before {
+    content: '➔ ';
   }
 }
 </style>
