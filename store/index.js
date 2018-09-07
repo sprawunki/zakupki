@@ -109,6 +109,11 @@ export default () => {
               ingredient.priority += 2
             }
 
+            if (ingredient.product.stockLevel === 0) {
+              recipe.score -= 2
+              ingredient.priority += 2
+            }
+
             if (moment(ingredient.product.bestBefore).isBefore(bestBeforeThreshold)) {
               recipe.score += 1
               ingredient.priority += 1
