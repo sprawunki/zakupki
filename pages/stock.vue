@@ -64,47 +64,42 @@ export default {
         (acc, cur) => (acc || cur.stockLevel < cur.minStockAmount),
         false
       )
-    },
-    updateStockList (collection) {
-      this.$store.dispatch({
-        type: 'updateStockList',
-        item: collection
-      })
-    },
-    load () {
-      this.loading = true
-      let tokens = this.$store.state.token
-      let query = '{locations {name products {name bestBefore stockLevel minStockAmount stockUnit {name}}}}'
-      let q = JSON.stringify(
-        {
-          query: query,
-          tokens: tokens
-        }
-      )
-      axios
-        .get('https://api.lewkowi.cz/?q=' + encodeURIComponent(q))
-        .then(
-          response => {
-            if (response.data.errors) {
-              throw response.data.errors[0].message
-            }
-
-            this.updateStockList(response.data.data.locations)
-
-            this.loading = false
-            this.error = false
-          }
-        ).catch(
-          (error) => {
-            this.loading = false
-            this.error = true
-            this.errorMessage = error
-          }
-        )
     }
   },
-  created () {
-    this.load()
+  fetch ({store}) {
+    this.loading = true
+    let tokens = store.state.token
+    let query = '{locations {name products {name bestBefore stockLevel minStockAmount stockUnit {name}}}}'
+    let q = JSON.stringify(
+      {
+        query: query,
+        tokens: tokens
+      }
+    )
+
+    return axios
+      .get('https://api.lewkowi.cz/?q=' + encodeURIComponent(q))
+      .then(
+        response => {
+          if (response.data.errors) {
+            throw response.data.errors[0].message
+          }
+
+          this.loading = false
+          this.error = false
+
+          store.dispatch({
+            type: 'updateStockList',
+            item: response.data.data.locations
+          })
+        }
+      ).catch(
+        (error) => {
+          this.loading = false
+          this.error = true
+          this.errorMessage = error
+        }
+      )
   },
   computed: mapState({
     stock: state => this.$store.state.stock

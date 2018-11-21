@@ -8,7 +8,7 @@
   </md-list-item> -->
   <li class="list-item">
     <label class="product">
-      <input class="product__checkbox" type="checkbox">
+      <input class="product__checkbox" type="checkbox" :checked="inCart" @change="toggleItem(name)">
       <span class="product__name">{{name}}</span>
       <span class="product__amount">{{amount}} {{unit}}</span>
     </label>
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: [
     'name',
@@ -23,8 +25,10 @@ export default {
     'unit',
     'inCart'
   ],
-  mounted () {
-    console.log('item')
+  methods: {
+    ...mapActions([
+      'toggleItem'
+    ])
   }
 }
 </script>

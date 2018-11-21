@@ -36,50 +36,42 @@ export default {
   components: {
     ShoppingListItem
   },
-  methods: {
-    updateShoppingList (collection) {
-      this.$store.dispatch({
-        type: 'updateShoppingList',
-        item: collection
-      })
-    },
-    loadData () {
-      this.$store.state.refresh = false
-      this.loading = true
-      let tokens = this.$store.state.token
-      let query = '{items {amount product {name purchaseUnit {name}}}}'
-      let q = JSON.stringify(
-        {
-          query: query,
-          tokens: tokens
+  fetch ({store}) {
+    store.state.refresh = false
+    this.loading = true
+    let tokens = store.state.token
+    let query = '{items {amount product {name purchaseUnit {name}}}}'
+    let q = JSON.stringify(
+      {
+        query: query,
+        tokens: tokens
+      }
+    )
+    return axios
+      .get('https://api.lewkowi.cz/?q=' + encodeURIComponent(q))
+      .then(
+        response => {
+          if (response.data.errors) {
+            throw response.data.errors[0].message
+          }
+
+          store.dispatch({
+            type: 'updateShoppingList',
+            item: response.data.data.items
+          })
+
+          this.loading = false
+          this.error = false
+          store.state.refresh = true
+        }
+      ).catch(
+        (error) => {
+          console.error(error)
+          this.loading = false
+          this.error = true
+          this.errorMessage = error
         }
       )
-      axios
-        .get('https://api.lewkowi.cz/?q=' + encodeURIComponent(q))
-        .then(
-          response => {
-            if (response.data.errors) {
-              throw response.data.errors[0].message
-            }
-
-            this.updateShoppingList(response.data.data.items)
-
-            this.loading = false
-            this.error = false
-            this.$store.state.refresh = true
-          }
-        ).catch(
-          (error) => {
-            console.error(error)
-            this.loading = false
-            this.error = true
-            this.errorMessage = error
-          }
-        )
-    }
-  },
-  created () {
-    this.loadData()
   },
   computed: mapState({
     shoppinglist: state => this.$store.state.shoppinglist
