@@ -55,14 +55,14 @@ export default {
             throw response.data.errors[0].message
           }
 
-          this.$store.dispatch({
+          store.dispatch({
             type: 'updateShoppingList',
             item: response.data.data.items
           })
 
           this.loading = false
           this.error = false
-          this.$store.state.refresh = true
+          store.state.refresh = true
         }
       ).catch(
         (error) => {

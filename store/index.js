@@ -4,6 +4,7 @@ import moment from 'moment'
 export default () => {
   return new Vuex.Store({
     state: {
+      cart: [],
       shoppinglist: [],
       stock: [],
       recipes: [],
@@ -12,12 +13,35 @@ export default () => {
       }
     },
     mutations: {
+      toggleCartItem (state, payload) {
+        if (state.cart.includes(payload)) {
+          state.cart = state.cart.filter((item) => item !== payload)
+        } else {
+          state.cart.push(payload)
+        }
+      },
       updateShoppingList (state, payload) {
         let newState = state
         newState.shoppinglist = payload.item.filter((item) => {
           if (item.product) {
             return item
           }
+        })
+
+        newState.shoppinglist.forEach((item) => {
+          if (state.cart.includes(item.product.name)) {
+            item.inCart = true
+          }
+        })
+
+        newState.cart = newState.cart.filter((item) => {
+          return state
+            .shoppinglist
+            .filter(
+              (shoppinglistItem) => {
+                return shoppinglistItem.product.name === item
+              }
+            ).length > 0
         })
 
         newState.shoppinglist.sort(
@@ -174,6 +198,12 @@ export default () => {
       }
     },
     actions: {
+      toggleItem (context, payload) {
+        context.commit('toggleCartItem', payload)
+      },
+      removeFromCart (context, payload) {
+        context.commit('removeFromCart', payload)
+      },
       updateShoppingList (context, payload) {
         context.commit('updateShoppingList', payload)
       },
