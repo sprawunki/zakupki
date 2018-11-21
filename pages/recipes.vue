@@ -48,47 +48,41 @@ export default {
       errorMessage: ''
     }
   },
-  methods: {
-    updateRecipeList (collection) {
-      this.$store.dispatch({
-        type: 'updateRecipeList',
-        item: collection
-      })
-    },
-    load () {
-      this.loading = true
-      let tokens = this.$store.state.token
-      let query = '{recipes {name ingredients {amount product {name stockUnit {name} stockLevel bestBefore}}}}'
-      let q = JSON.stringify(
-        {
-          query: query,
-          tokens: tokens
+  fetch ({store}) {
+    store.state.refresh = false
+    this.loading = true
+    let tokens = store.state.token
+    let query = '{recipes {name ingredients {amount product {name stockUnit {name} stockLevel bestBefore}}}}'
+    let q = JSON.stringify(
+      {
+        query: query,
+        tokens: tokens
+      }
+    )
+
+    return axios
+      .get('https://api.lewkowi.cz/?q=' + encodeURIComponent(q))
+      .then(
+        response => {
+          if (response.data.errors) {
+            throw response.data.errors[0].message
+          }
+
+          this.loading = false
+          this.error = false
+
+          return store.dispatch({
+            type: 'updateRecipeList',
+            item: response.data.data.recipes
+          })
+        }
+      ).catch(
+        (error) => {
+          this.loading = false
+          this.error = true
+          this.errorMessage = error
         }
       )
-      axios
-        .get('https://api.lewkowi.cz/?q=' + encodeURIComponent(q))
-        .then(
-          response => {
-            if (response.data.errors) {
-              throw response.data.errors[0].message
-            }
-
-            this.updateRecipeList(response.data.data.recipes)
-
-            this.loading = false
-            this.error = false
-          }
-        ).catch(
-          (error) => {
-            this.loading = false
-            this.error = true
-            this.errorMessage = error
-          }
-        )
-    }
-  },
-  created () {
-    this.load()
   },
   computed: mapState({
     recipes: state => this.$store.state.recipes
