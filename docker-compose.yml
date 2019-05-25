@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+    command: ["npm", "run", "dev"]
+    volumes:
+      - ./assets:/src/assets
+      - ./components:/src/components
+      - ./layouts:/src/layouts
+      - ./middleware:/src/middleware
+      - ./pages:/src/pages
+      - ./plugins:/src/plugins
+      - ./static:/src/static
+      - ./store:/src/store
+      - ./.eslintrc.js:/src/.eslintrc.js
+      - ./nuxt.config.js:/src/nuxt.config.js
+    environment:
+      API_URL: "http://api.lewkowi.cz"
+    ports:
+      - 3000:3000

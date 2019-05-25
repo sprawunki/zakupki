@@ -57,6 +57,7 @@ export default {
   fetch ({store}) {
     this.loading = true
     let tokens = store.state.token
+    let apiUrl = process.env.apiUrl
     let query = '{locations {name products {name bestBefore stockLevel minStockAmount stockUnit {name}}}}'
     let q = JSON.stringify(
       {
@@ -66,7 +67,7 @@ export default {
     )
 
     return axios
-      .get('https://api.lewkowi.cz/?q=' + encodeURIComponent(q))
+      .get(apiUrl + '?q=' + encodeURIComponent(q))
       .then(
         response => {
           if (response.data.errors) {

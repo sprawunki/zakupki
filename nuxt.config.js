@@ -28,7 +28,12 @@ module.exports = {
     { src: '~/plugins/localStorage.js', ssr: false }
   ],
   modules: [
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    ['nuxt-env', {
+      keys: [
+        {key: 'API_URL', default: 'http://localhost:9080'}
+      ]
+    }]
   ],
   build: {
     /*
@@ -53,5 +58,9 @@ module.exports = {
   },
   router: {
     base: process.env.BASE_PATH || '/'
+  },
+  server: {
+    port: 3000,
+    host: '0.0.0.0'
   }
 }
