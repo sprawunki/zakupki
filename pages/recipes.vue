@@ -1,36 +1,33 @@
 <template>
-  <div class="recipes">
-    <div
-      class="recipe"
-      v-for="recipe in $store.state.recipes"
-      :key="recipe.id"
-      :class="{
-        'promoted': recipe.score > 0,
-        'demoted': recipe.score < 0
-      }"
-    >
-        <h2 class="title">{{ recipe.name }}</h2>
-        <ul class="ingredients">
-          <li
-            v-for="item in recipe.ingredients"
-            :key="item.id"
-            class="ingredient"
-            :class="{
-              'expires-soon': item.product.expiresSoon,
-              'low-stock': item.product.stockLevel < item.amount,
-              'out-of-stock': item.product.stockLevel === 0
-            }"
-          >
-            <span class="ingredient__amount">{{ item.amount }} {{item.product.stockUnit.name }}</span>
-            <span>{{ item.product.name }}</span>
-          </li>
-        </ul>
+  <div class="main-content">
+    <div class="recipes">
+      <div
+        class="recipe"
+        v-for="recipe in $store.state.recipes"
+        :key="recipe.id"
+        :class="{
+          'promoted': recipe.score > 0,
+          'demoted': recipe.score < 0
+        }"
+      >
+          <h2 class="title">{{ recipe.name }}</h2>
+          <ul class="ingredients">
+            <li
+              v-for="item in recipe.ingredients"
+              :key="item.id"
+              class="ingredient"
+              :class="{
+                'expires-soon': item.product.expiresSoon,
+                'low-stock': item.product.stockLevel < item.amount,
+                'out-of-stock': item.product.stockLevel === 0
+              }"
+            >
+              <span class="ingredient__amount">{{ item.amount }} {{item.product.stockUnit.name }}</span>
+              <span>{{ item.product.name }}</span>
+            </li>
+          </ul>
+      </div>
     </div>
-
-    <md-snackbar md-position="center" :md-duration="alertDuration" :md-active.sync="error" md-persistent>
-      <span>{{ errorMessage }}</span>
-      <md-button class="md-primary" @click="error = false">Close</md-button>
-    </md-snackbar>
   </div>
 </template>
 
@@ -131,10 +128,9 @@ export default {
 }
 .recipes {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  overflow: scroll;
-  background: $color-base;
-  row-gap: 1px;
+  margin: 0 auto;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 1em;
 }
 .recipe {
   background: $color-background;

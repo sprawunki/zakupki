@@ -1,5 +1,5 @@
 <template>
-  <md-content class="main-content">
+  <div class="main-content">
     <ul class="shopping-list">
       <shopping-list-item
         v-for="item in $store.state.shoppinglist"
@@ -10,12 +10,7 @@
         v-bind:inCart="item.inCart"
       />
     </ul>
-
-    <md-snackbar md-position="center" :md-duration="alertDuration" :md-active.sync="error" md-persistent>
-      <span>{{ errorMessage }}</span>
-      <md-button class="md-primary" @click="error = false">Close</md-button>
-    </md-snackbar>
-  </md-content>
+  </div>
 </template>
 
 <script>
@@ -80,11 +75,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "assets/theme.scss";
+
 .shopping-list {
-  width: 100%;
-  max-width: 360px;
-  display: block;
-  margin: 1rem auto 1.25rem;
-  padding: 0;
+  @include card;
+}
+.actions {
+  position: sticky;
+  bottom: 0;
+  outline: solid 1px red;
 }
 </style>

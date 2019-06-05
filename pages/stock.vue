@@ -1,46 +1,34 @@
 <template>
-  <div class="stock">
-    <div
-      class="location"
-      v-for="location in $store.state.stock"
-      :key="location.id"
-      :class="{
-        'has-missing-items': hasMissingItems(location)
-      }"
-    >
-          <h2 class="title">{{ location.name }}</h2>
-          <ul class="products">
-            <li
-              class="product"
-              v-for="item in location.products"
-              :key="item.id"
-              v-if="item.stockLevel > 0 || item.minStockAmount > 0"
-              :class="{
-                'expires-soon': item.expiresSoon,
-                'low-stock': item.lowStock,
-                'out-of-stock': item.stockLevel === 0
-              }"
-            >
-              <span v-if="item.stockLevel > 0" class="product__amount">{{ item.stockLevel }} {{ item.stockUnit.name }}</span>
-              <span v-if="item.stockLevel == 0" class="product__amount">×</span>
-              <span >{{ item.name }}</span>
-            </li>
-          </ul>
-
-          <!-- <ul>
-            <li v-for="item in location.products" :key="item.id" v-if="item.minStockAmount == 0 && item.stockLevel > 0" :class="{ 'md-inset': !item.expiresSoon }">
-              <md-icon v-if="item.expiresSoon">warning</md-icon>
-              <del v-if="item.stockLevel == 0" class="md-list-item-text">{{ item.name }}</del>
-              <span v-if="item.stockLevel > 0" class="md-list-item-text">{{ item.name }}</span>
-              <span v-if="item.stockLevel > 0" class="md-caption">{{ item.stockLevel }} {{ item.stockUnit.name }}</span>
-            </li>
-          </ul> -->
+  <div class="main-content">
+    <div class="stock">
+      <div
+        class="location"
+        v-for="location in $store.state.stock"
+        :key="location.id"
+        :class="{
+          'has-missing-items': hasMissingItems(location)
+        }"
+      >
+            <h2 class="title">{{ location.name }}</h2>
+            <ul class="products">
+              <li
+                class="product"
+                v-for="item in location.products"
+                :key="item.id"
+                v-if="item.stockLevel > 0 || item.minStockAmount > 0"
+                :class="{
+                  'expires-soon': item.expiresSoon,
+                  'low-stock': item.lowStock,
+                  'out-of-stock': item.stockLevel === 0
+                }"
+              >
+                <span v-if="item.stockLevel > 0" class="product__amount">{{ item.stockLevel }} {{ item.stockUnit.name }}</span>
+                <span v-if="item.stockLevel == 0" class="product__amount">×</span>
+                <span >{{ item.name }}</span>
+              </li>
+            </ul>
+      </div>
     </div>
-
-    <md-snackbar md-position="center" :md-duration="alertDuration" :md-active.sync="error" md-persistent>
-      <span>{{ errorMessage }}</span>
-      <md-button class="md-primary" @click="error = false">Close</md-button>
-    </md-snackbar>
   </div>
 </template>
 
@@ -119,10 +107,9 @@ export default {
 }
 .stock {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  overflow: scroll;
-  row-gap: 1px;
-  background-color: $color-base;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 1em;
+  margin: 0 auto;
 }
 .products {
   display: block;

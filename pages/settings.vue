@@ -1,28 +1,12 @@
 <template>
-  <md-content class="main-content md-layout">
-    <form novalidate class="md-layout">
-      <md-card class="md-layout-item">
-        <md-card-header>
-          <div class="md-title">Credentials</div>
-        </md-card-header>
-
-        <md-card-content>
-          <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
-              <md-field>
-                <label for="grocy-token">Grocy Token</label>
-                <md-input name="grocy-token" v-model="grocy" />
-              </md-field>
-            </div>
-          </div>
-        </md-card-content>
-
-        <md-card-actions>
-          <md-button to="/">OK</md-button>
-        </md-card-actions>
-      </md-card>
+  <div class="main-content">
+    <form novalidate class="settings">
+      <label>
+        <span>Grocy Token</span>
+        <input type="text" v-model="grocy" />
+      </label>
     </form>
-  </md-content>
+  </div>
 </template>
 
 <script>
@@ -43,3 +27,27 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import "assets/theme.scss";
+
+.settings {
+  @include card;
+}
+label {
+  display: block;
+}
+
+label span {
+  display: block;
+}
+
+label input {
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: solid 1px $color-base;
+  margin: 1em 0;
+  padding: 1em .5em;
+}
+</style>

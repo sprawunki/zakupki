@@ -22,11 +22,9 @@ module.exports = {
   ** Build configuration
   */
   css: [
-    { src: 'vue-material/dist/vue-material.min.css', lang: 'css' },
-    { src: '~/assets/theme.scss', lang: 'scss' } // include vue-material theme engine
+    { src: '~/assets/theme.scss', lang: 'scss' }
   ],
   plugins: [
-    { src: '~/plugins/vue-material' },
     { src: '~/plugins/localStorage.js', ssr: false }
   ],
   modules: [
@@ -37,7 +35,6 @@ module.exports = {
     ** Run ESLint on save
     */
     vendor: [
-      'vue-material',
       'axios'
     ],
     extend (config, { isDev, isClient }) {

@@ -1,18 +1,28 @@
-@import "~vue-material/dist/theme/engine"; // Import the theme engine
-
-@include md-register-theme("default", (
-  primary: md-get-palette-color(blue, A200), // The primary color of your application
-  accent: md-get-palette-color(red, A200) // The accent or secondary color
-));
-
-@import "~vue-material/dist/theme/all"; // Apply the theme
-
 $color-background: #f1f2f0;
 $color-base: #35342f;
 $color-highlight: $color-base;
 $color-highlight-background: #37bbe4;
-$color-dim-background: #e1e0dd;
+$color-dim-background: darken($color-background, 20%);
 
 body {
-  background-color: $color-background;
+  background: $color-dim-background;
+}
+
+.main-content {
+  padding: 1em;
+  margin-bottom: 5em;
+}
+
+@mixin card {
+  width: 100%;
+  max-width: 360px;
+  display: block;
+  margin: 0 auto;
+  padding: 1em;
+  float: none;
+  background: $color-background;
+}
+
+p {
+  margin: 1em 0;
 }

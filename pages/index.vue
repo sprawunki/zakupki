@@ -1,14 +1,12 @@
 <template>
-  <md-content class="main-content">
-    <md-empty-state
-      v-if="showNotice"
-      md-icon="info"
-      md-label="You're in the demo mode, you know?"
-      md-description="Go ahead and have a look around!">
-      <p>Click on the gear icon in the top right corner of the screen to set the token and see the real data.</p>
+  <div class="main-content">
+    <div class="intro">
+      <h2>You're in the demo mode, you know?</h2>
+      <p>Go ahead and have a look around!</p>
+      <p>Go to <nuxt-link to="/settings">settings</nuxt-link> and set the token and see the real data.</p>
       <p>Learn more about Grocy at <a href="https://grocy.info/" target="_blank" rel=”noopener”>https://grocy.info/</a></p>
-    </md-empty-state>
-  </md-content>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -38,3 +36,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import "assets/theme.scss";
+
+.intro {
+  @include card;
+}
+</style>
