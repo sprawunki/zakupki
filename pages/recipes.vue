@@ -3,7 +3,7 @@
     <div class="recipes">
       <div
         class="recipe"
-        v-for="recipe in $store.state.recipes"
+        v-for="recipe in $store.state.recipes.items"
         :key="recipe.id"
         :class="{
           'promoted': recipe.score > 0,
@@ -14,6 +14,7 @@
           <ul class="ingredients">
             <li
               v-for="item in recipe.ingredients"
+              v-if="item.product"
               :key="item.id"
               class="ingredient"
               :class="{
@@ -32,7 +33,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { mapState } from 'vuex'
 
 export default {
@@ -45,42 +45,8 @@ export default {
       errorMessage: ''
     }
   },
-  fetch ({store}) {
-    store.state.refresh = false
-    this.loading = true
-    let apiUrl = process.env.apiUrl
-    let tokens = store.state.token
-    let query = '{recipes {name ingredients {amount product {name stockUnit {name} stockLevel bestBefore}}}}'
-    let q = JSON.stringify(
-      {
-        query: query,
-        tokens: tokens
-      }
-    )
-
-    return axios
-      .get(apiUrl + '?q=' + encodeURIComponent(q))
-      .then(
-        response => {
-          if (response.data.errors) {
-            throw response.data.errors[0].message
-          }
-
-          this.loading = false
-          this.error = false
-
-          return store.dispatch({
-            type: 'updateRecipeList',
-            item: response.data.data.recipes
-          })
-        }
-      ).catch(
-        (error) => {
-          this.loading = false
-          this.error = true
-          this.errorMessage = error
-        }
-      )
+  async fetch ({store}) {
+    await store.dispatch('recipes/get')
   },
   computed: mapState({
     recipes: state => this.$store.state.recipes

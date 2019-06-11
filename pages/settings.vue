@@ -18,10 +18,10 @@ export default {
   computed: {
     grocy: {
       get () {
-        return this.$store.state.token.grocy
+        return this.$store.state.settings.tokens.grocy
       },
       set (token) {
-        this.$store.dispatch('setGrocyToken', token)
+        this.$store.dispatch('settings/setGrocyToken', token)
       }
     }
   }

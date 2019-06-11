@@ -3,11 +3,8 @@
     <div class="stock">
       <div
         class="location"
-        v-for="location in $store.state.stock"
+        v-for="location in $store.state.stock.items"
         :key="location.id"
-        :class="{
-          'has-missing-items': hasMissingItems(location)
-        }"
       >
             <h2 class="title">{{ location.name }}</h2>
             <ul class="products">
@@ -33,7 +30,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { mapState } from 'vuex'
 
 export default {
@@ -54,41 +50,8 @@ export default {
       )
     }
   },
-  fetch ({store}) {
-    this.loading = true
-    let tokens = store.state.token
-    let apiUrl = process.env.apiUrl
-    let query = '{locations {name products {name bestBefore stockLevel minStockAmount stockUnit {name}}}}'
-    let q = JSON.stringify(
-      {
-        query: query,
-        tokens: tokens
-      }
-    )
-
-    return axios
-      .get(apiUrl + '?q=' + encodeURIComponent(q))
-      .then(
-        response => {
-          if (response.data.errors) {
-            throw response.data.errors[0].message
-          }
-
-          this.loading = false
-          this.error = false
-
-          store.dispatch({
-            type: 'updateStockList',
-            item: response.data.data.locations
-          })
-        }
-      ).catch(
-        (error) => {
-          this.loading = false
-          this.error = true
-          this.errorMessage = error
-        }
-      )
+  async fetch ({store}) {
+    await store.dispatch('stock/get')
   },
   computed: mapState({
     stock: state => this.$store.state.stock

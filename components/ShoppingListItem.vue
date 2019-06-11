@@ -19,7 +19,7 @@ export default {
     'inCart'
   ],
   methods: {
-    ...mapActions([
+    ...mapActions('shoppinglist', [
       'toggleItem'
     ])
   }

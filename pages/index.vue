@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     updateNotice () {
-      this.showNotice = !this.$store.state.token.grocy
+      this.showNotice = !this.$store.state.settings.tokens.grocy
 
       if (!this.showNotice) {
         this.$router.push({path: 'list'})
