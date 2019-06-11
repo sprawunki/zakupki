@@ -89,7 +89,11 @@ export const mutations = {
 
 export const actions = {
   async get ({commit, rootState}) {
-    let apiUrl = this.$env.API_URL
+    let apiUrl = process.env.apiUrl
+    if (this.$env.API_URL) {
+      apiUrl = this.$env.API_URL
+    }
+
     let tokens = rootState.settings.tokens
     let query = '{recipes {name ingredients {amount product {name stockUnit {name} stockLevel bestBefore}}}}'
     let q = JSON.stringify(

@@ -40,7 +40,11 @@ export const actions = {
     context.commit('toggleCartItem', payload)
   },
   async get ({commit, rootState}) {
-    let apiUrl = this.$env.API_URL
+    let apiUrl = process.env.apiUrl
+    if (this.$env.API_URL) {
+      apiUrl = this.$env.API_URL
+    }
+
     let tokens = rootState.settings.tokens
     let query = '{items {amount product {name purchaseUnit {name}}}}'
     let q = JSON.stringify(
