@@ -1,9 +1,6 @@
 <template>
   <div class="navbar">
-    <nav
-      id="main-navigation"
-      class="main-nav"
-    >
+    <nav id="main-navigation" class="main-nav">
       <ul class="main-nav__list">
         <li class="main-nav__item">
           <nuxt-link class="main-nav__link" to="/list">list</nuxt-link>
@@ -23,7 +20,7 @@
 </template>
 
 <style lang="scss">
-@import "assets/theme.scss";
+@import 'assets/theme.scss';
 
 .navbar {
   background: $color-background;
@@ -53,5 +50,4 @@
     padding: 0.5em;
   }
 }
-
 </style>

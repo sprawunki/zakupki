@@ -1,9 +1,14 @@
 <template>
   <li class="list-item">
     <label class="product">
-      <input class="product__checkbox" type="checkbox" :checked="inCart" @change="toggleItem(name)">
-      <span class="product__name">{{name}}</span>
-      <span class="product__amount">{{amount}} {{unit}}</span>
+      <input
+        class="product__checkbox"
+        type="checkbox"
+        :checked="inCart"
+        @change="toggleItem(name)"
+      />
+      <span class="product__name">{{ name }}</span>
+      <span class="product__amount">{{ amount }} {{ unit }}</span>
     </label>
   </li>
 </template>
@@ -12,22 +17,15 @@
 import { mapActions } from 'vuex'
 
 export default {
-  props: [
-    'name',
-    'amount',
-    'unit',
-    'inCart'
-  ],
+  props: ['name', 'amount', 'unit', 'inCart'],
   methods: {
-    ...mapActions('shoppinglist', [
-      'toggleItem'
-    ])
+    ...mapActions('shoppinglist', ['toggleItem'])
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "assets/theme.scss";
+@import 'assets/theme.scss';
 
 .list-item {
   position: relative;
@@ -42,7 +40,7 @@ export default {
 
 .product {
   position: relative;
-  padding: 1em .5em;
+  padding: 1em 0.5em;
   display: flex;
   align-items: center;
 }
@@ -65,14 +63,14 @@ export default {
   }
 }
 
-input[type=checkbox] {
+input[type='checkbox'] {
   appearance: none;
   display: inline-block;
   display: none;
   vertical-align: baseline;
   width: 1.2rem;
   height: 1.2rem;
-  margin-bottom: -.2rem;
+  margin-bottom: -0.2rem;
   background: $color-background;
 
   &::before {

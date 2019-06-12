@@ -2,28 +2,18 @@
   <div class="main-content">
     <div class="stock">
       <div
-        class="location"
         v-for="location in $store.state.stock.items"
         :key="location.id"
+        class="location"
       >
-            <h2 class="title">{{ location.name }}</h2>
-            <ul class="products">
-              <li
-                class="product"
-                v-for="item in location.products"
-                :key="item.id"
-                v-if="item.stockLevel > 0 || item.minStockAmount > 0"
-                :class="{
-                  'expires-soon': item.expiresSoon,
-                  'low-stock': item.lowStock,
-                  'out-of-stock': item.stockLevel === 0
-                }"
-              >
-                <span v-if="item.stockLevel > 0" class="product__amount">{{ item.stockLevel }} {{ item.stockUnit.name }}</span>
-                <span v-if="item.stockLevel == 0" class="product__amount">×</span>
-                <span >{{ item.name }}</span>
-              </li>
-            </ul>
+        <h2 class="title">{{ location.name }}</h2>
+        <ul class="products">
+          <product-list-item
+            v-for="item in location.products"
+            :key="item.id"
+            :product="item"
+          />
+        </ul>
       </div>
     </div>
   </div>
@@ -31,10 +21,14 @@
 
 <script>
 import { mapState } from 'vuex'
+import ProductListItem from '~/components/ProductListItem.vue'
 
 export default {
-  name: 'stock',
-  data: function () {
+  name: 'Stock',
+  components: {
+    ProductListItem
+  },
+  data: function() {
     return {
       error: false,
       alertDuration: 10000,
@@ -42,31 +36,23 @@ export default {
       loading: false
     }
   },
-  methods: {
-    hasMissingItems (location) {
-      return location.products.reduce(
-        (acc, cur) => (acc || cur.stockLevel < cur.minStockAmount),
-        false
-      )
-    }
-  },
-  async fetch ({store}) {
-    await store.dispatch('stock/get')
-  },
   computed: mapState({
     stock: state => this.$store.state.stock
-  })
+  }),
+  async fetch({ store }) {
+    await store.dispatch('stock/get')
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "assets/theme.scss";
+@import 'assets/theme.scss';
 
 .title {
   line-height: 2rem;
   font-size: 1.6rem;
   font-weight: 900;
-  margin: .5em;
+  margin: 0.5em;
   padding: 0;
 }
 .stock {
@@ -82,36 +68,10 @@ export default {
   padding: 0;
   position: relative;
 }
-.product {
-  position: relative;
-  display: block;
-  font-size: 1rem;
-  margin: .25rem 0 .25rem 34%;
-  padding: 0 .25rem;
-}
-.product__amount {
-  position: absolute;
-  top: 0;
-  right: 100%;
-  display: block;
-  text-align: right;
-  white-space: nowrap;
-  font-weight: 300;
-  width: 50%;
-
-  &::after {
-    content: ' ';
-    white-space: pre;
-  }
-}
 .location {
   background: $color-background;
-  padding: .25em;
+  padding: 0.25em;
   position: relative;
-}
-.has-missing-items {
-  background: $color-highlight-background;
-  color: $color-highlight;
 }
 .low-stock {
   font-weight: 900;

@@ -4,42 +4,38 @@
       <shopping-list-item
         v-for="item in listItems"
         :key="item.id"
-        v-bind:name="item.product.name"
-        v-bind:amount="item.amount"
-        v-bind:unit="item.product.purchaseUnit.name"
-        v-bind:inCart="item.inCart"
+        :name="item.product.name"
+        :amount="item.amount"
+        :unit="item.product.purchaseUnit.name"
+        :in-cart="item.inCart"
       />
     </ul>
   </div>
 </template>
 
 <script>
-// import axios from 'axios'
 import { mapGetters } from 'vuex'
 import ShoppingListItem from '~/components/ShoppingListItem.vue'
 
 export default {
   name: 'ShoppingList',
-  data: function () {
-    return {
-    }
-  },
   components: {
     ShoppingListItem
   },
-  async fetch ({store}) {
-    await store.dispatch('shoppinglist/get')
+  data: function() {
+    return {}
   },
   computed: {
-    ...mapGetters('shoppinglist', [
-      'listItems'
-    ])
+    ...mapGetters('shoppinglist', ['listItems'])
+  },
+  async fetch({ store }) {
+    await store.dispatch('shoppinglist/get')
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "assets/theme.scss";
+@import 'assets/theme.scss';
 
 .shopping-list {
   @include card;

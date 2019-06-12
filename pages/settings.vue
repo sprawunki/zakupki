@@ -3,7 +3,7 @@
     <form novalidate class="settings">
       <label>
         <span>Grocy Token</span>
-        <input type="text" v-model="grocy" />
+        <input v-model="grocy" type="text" />
       </label>
     </form>
   </div>
@@ -12,15 +12,15 @@
 <script>
 export default {
   name: 'Login',
-  data: function () {
+  data: function() {
     return {}
   },
   computed: {
     grocy: {
-      get () {
+      get() {
         return this.$store.state.settings.tokens.grocy
       },
-      set (token) {
+      set(token) {
         this.$store.dispatch('settings/setGrocyToken', token)
       }
     }
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "assets/theme.scss";
+@import 'assets/theme.scss';
 
 .settings {
   @include card;
@@ -48,6 +48,6 @@ label input {
   border: none;
   border-bottom: solid 1px $color-base;
   margin: 1em 0;
-  padding: 1em .5em;
+  padding: 1em 0.5em;
 }
 </style>

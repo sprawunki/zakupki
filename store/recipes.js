@@ -1,4 +1,3 @@
-import axios from 'axios'
 import moment from 'moment'
 
 export const state = () => ({
@@ -6,17 +5,17 @@ export const state = () => ({
 })
 
 export const mutations = {
-  set (state, payload) {
-    let newState = state
+  SET_RECIPES(state, payload) {
+    const newState = state
 
     newState.items = payload
 
-    newState.items.map((recipe) => {
-      let bestBeforeThreshold = moment().add(5, 'days')
+    newState.items.map(recipe => {
+      const bestBeforeThreshold = moment().add(5, 'days')
 
       recipe.score = 0
 
-      recipe.ingredients.map((ingredient) => {
+      recipe.ingredients.map(ingredient => {
         ingredient.priority = 0
 
         if (ingredient.product) {
@@ -30,7 +29,9 @@ export const mutations = {
             ingredient.priority += 2
           }
 
-          if (moment(ingredient.product.bestBefore).isBefore(bestBeforeThreshold)) {
+          if (
+            moment(ingredient.product.bestBefore).isBefore(bestBeforeThreshold)
+          ) {
             recipe.score += 1
             ingredient.priority += 1
             ingredient.product.expiresSoon = true
@@ -88,37 +89,21 @@ export const mutations = {
 }
 
 export const actions = {
-  async get ({commit, rootState}) {
+  async get({ commit, rootState }) {
     let apiUrl = process.env.apiUrl
     if (this.$env.API_URL) {
       apiUrl = this.$env.API_URL
     }
 
-    let tokens = rootState.settings.tokens
-    let query = '{recipes {name ingredients {amount product {name stockUnit {name} stockLevel bestBefore}}}}'
-    let q = JSON.stringify(
-      {
-        query: query,
-        tokens: tokens
-      }
-    )
+    const tokens = rootState.settings.tokens
+    const query =
+      '{recipes {name ingredients {amount product {name stockUnit {name} stockLevel bestBefore}}}}'
+    const q = JSON.stringify({
+      query: query,
+      tokens: tokens
+    })
 
-    await axios
-      .get(apiUrl + '?q=' + encodeURIComponent(q))
-      .then(
-        response => {
-          if (response.data.errors) {
-            throw response.data.errors[0].message
-          }
-
-          commit('set', response.data.data.recipes)
-        }
-      ).catch(
-        (error) => {
-          this.loading = false
-          this.error = true
-          this.errorMessage = error
-        }
-      )
+    const data = await this.$axios.$get(apiUrl + '?q=' + encodeURIComponent(q))
+    commit('SET_RECIPES', data.data.recipes)
   }
 }

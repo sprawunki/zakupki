@@ -1,34 +1,30 @@
-import axios from 'axios'
-
 export const state = () => ({
   items: [],
   cart: []
 })
 
 export const mutations = {
-  set (state, payload) {
-    let newState = state
-    newState.items = payload.filter((item) => {
+  SET_SHOPPINGLIST(state, payload) {
+    const newState = state
+    newState.items = payload.filter(item => {
       if (item.product) {
         return item
       }
     })
 
-    newState.cart = newState.cart.filter((item) => {
-      return state
-        .list
-        .filter(
-          (listItem) => {
-            return listItem.product.name === item
-          }
-        ).length > 0
+    newState.cart = newState.cart.filter(item => {
+      return (
+        state.items.filter(listItem => {
+          return listItem.product.name === item
+        }).length > 0
+      )
     })
 
     Object.assign(state, newState)
   },
-  toggleCartItem (state, payload) {
+  toggleCartItem(state, payload) {
     if (state.cart.includes(payload)) {
-      state.cart = state.cart.filter((item) => item !== payload)
+      state.cart = state.cart.filter(item => item !== payload)
     } else {
       state.cart.push(payload)
     }
@@ -36,49 +32,33 @@ export const mutations = {
 }
 
 export const actions = {
-  toggleItem (context, payload) {
+  toggleItem(context, payload) {
     context.commit('toggleCartItem', payload)
   },
-  async get ({commit, rootState}) {
+  async get({ commit, rootState }) {
     let apiUrl = process.env.apiUrl
     if (this.$env.API_URL) {
       apiUrl = this.$env.API_URL
     }
 
-    let tokens = rootState.settings.tokens
-    let query = '{items {amount product {name purchaseUnit {name}}}}'
-    let q = JSON.stringify(
-      {
-        query: query,
-        tokens: tokens
-      }
-    )
-    await axios
-      .get(apiUrl + '?q=' + encodeURIComponent(q))
-      .then(
-        response => {
-          if (response.data.errors) {
-            throw response.data.errors[0].message
-          }
+    const tokens = rootState.settings.tokens
+    const query = '{items {amount product {name purchaseUnit {name}}}}'
+    const q = JSON.stringify({
+      query: query,
+      tokens: tokens
+    })
 
-          commit('set', response.data.data.items)
-        }
-      ).catch(
-        (error) => {
-          this.loading = false
-          this.error = true
-          this.errorMessage = error
-        }
-      )
+    const data = await this.$axios.$get(apiUrl + '?q=' + encodeURIComponent(q))
+    commit('SET_SHOPPINGLIST', data.data.items)
   }
 }
 
 export const getters = {
   listItems: state => {
-    let listItems = JSON.parse(JSON.stringify(state.items))
-    let cart = JSON.parse(JSON.stringify(state.cart))
+    const listItems = JSON.parse(JSON.stringify(state.items))
+    const cart = JSON.parse(JSON.stringify(state.cart))
 
-    listItems.forEach((item) => {
+    listItems.forEach(item => {
       item.id = item.product.name
       item.inCart = false
 
@@ -87,21 +67,19 @@ export const getters = {
       }
     })
 
-    listItems.sort(
-      (a, b) => {
-        if (a.inCart && !b.inCart) {
-          return 1
-        }
-
-        if (!a.inCart && b.inCart) {
-          return -1
-        }
-
-        var x = a.product.name.toLowerCase()
-        var y = b.product.name.toLowerCase()
-        return x < y ? -1 : x > y ? 1 : 0
+    listItems.sort((a, b) => {
+      if (a.inCart && !b.inCart) {
+        return 1
       }
-    )
+
+      if (!a.inCart && b.inCart) {
+        return -1
+      }
+
+      const x = a.product.name.toLowerCase()
+      const y = b.product.name.toLowerCase()
+      return x < y ? -1 : x > y ? 1 : 0
+    })
 
     return listItems
   }

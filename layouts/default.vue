@@ -1,17 +1,15 @@
 <template>
   <div class="app">
-    <nuxt/>
-    <navbar/>
+    <nuxt />
+    <navbar />
   </div>
 </template>
 
 <script>
-import Toolbar from '~/components/Toolbar.vue'
 import Navbar from '~/components/Navbar.vue'
 
 export default {
   components: {
-    Toolbar,
     Navbar
   }
 }
@@ -19,7 +17,8 @@ export default {
 
 <style lang="scss">
 html {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -34,7 +33,9 @@ body {
   height: 100%;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: border-box;
   margin: 0;
 }

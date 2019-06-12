@@ -1,16 +1,22 @@
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
   env: {
     browser: true,
-    node: true
+    node: true,
+    'cypress/globals': true
   },
-  extends: 'standard',
-  // required to lint *.vue files
-  plugins: [
-    'html'
+  parserOptions: {
+    parser: 'babel-eslint'
+  },
+  extends: [
+    '@nuxtjs',
+    'plugin:nuxt/recommended',
+    'plugin:prettier/recommended',
+    'plugin:cypress/recommended',
+    'prettier',
+    'prettier/vue'
   ],
+  plugins: ['prettier', 'cypress'],
   // add your custom rules here
-  rules: {},
-  globals: {}
+  rules: {}
 }

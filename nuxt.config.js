@@ -1,7 +1,7 @@
-module.exports = {
+export default {
   /*
-  ** Headers of the page
-  */
+   ** Headers of the page
+   */
   head: {
     title: 'Zakupki',
     meta: [
@@ -11,48 +11,32 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,700,400italic|Material+Icons' }
+      {
+        rel: 'stylesheet',
+        href:
+          '//fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,700,400italic|Material+Icons'
+      }
     ]
   },
   /*
-  ** Customize the progress bar color
-  */
+   ** Customize the progress bar color
+   */
   loading: { color: '#448aff' },
   /*
-  ** Build configuration
-  */
-  css: [
-    { src: '~/assets/theme.scss', lang: 'scss' }
-  ],
-  plugins: [
-    { src: '~/plugins/localStorage.js', ssr: false }
-  ],
+   ** Build configuration
+   */
+  css: [{ src: '~/assets/theme.scss', lang: 'scss' }],
+  plugins: [{ src: '~/plugins/localStorage.js', ssr: false }],
   modules: [
+    '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    ['nuxt-env', {
-      keys: [
-        {key: 'API_URL', default: 'http://localhost:9080'}
-      ]
-    }]
-  ],
-  build: {
-    /*
-    ** Run ESLint on save
-    */
-    vendor: [
-      'axios'
-    ],
-    extend (config, { isDev, isClient }) {
-      if (isDev && isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
+    [
+      'nuxt-env',
+      {
+        keys: [{ key: 'API_URL', default: 'http://localhost:9080' }]
       }
-    }
-  },
+    ]
+  ],
   generate: {
     dir: 'public'
   },

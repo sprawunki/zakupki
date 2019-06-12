@@ -4,7 +4,7 @@ services:
   app:
     build:
       context: .
-    command: ["npm", "run", "dev"]
+    command: ['npm', 'run', 'dev']
     volumes:
       - ./assets:/src/assets
       - ./components:/src/components
@@ -17,6 +17,6 @@ services:
       - ./.eslintrc.js:/src/.eslintrc.js
       - ./nuxt.config.js:/src/nuxt.config.js
     environment:
-      API_URL: "http://api.lewkowi.cz"
+      API_URL: http://192.168.0.100:9080
     ports:
       - 3000:3000
