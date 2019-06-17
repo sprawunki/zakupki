@@ -9,7 +9,7 @@
         <h2 class="title">{{ location.name }}</h2>
         <ul class="products">
           <product-list-item
-            v-for="item in location.products"
+            v-for="item in getItems(location)"
             :key="item.id"
             :product="item"
           />
@@ -41,6 +41,15 @@ export default {
   }),
   async fetch({ store }) {
     await store.dispatch('stock/get')
+  },
+  methods: {
+    getItems(location) {
+      return location.products.filter(item => {
+        if (item.minStockAmount !== 0 || item.stockLevel !== 0) {
+          return item
+        }
+      })
+    }
   }
 }
 </script>
@@ -72,20 +81,5 @@ export default {
   background: $color-background;
   padding: 0.25em;
   position: relative;
-}
-.low-stock {
-  font-weight: 900;
-}
-.out-of-stock {
-  text-decoration: line-through solid $color-highlight-background;
-
-  .has-missing-items & {
-    text-decoration: line-through solid $color-base;
-  }
-}
-.expires-soon {
-  .product__amount::before {
-    content: '➔ ';
-  }
 }
 </style>

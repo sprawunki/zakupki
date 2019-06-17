@@ -84,15 +84,4 @@ export default {
 .demoted {
   background: $color-dim-background;
 }
-.low-stock {
-  font-weight: 900;
-}
-.out-of-stock {
-  text-decoration: line-through solid $color-highlight-background;
-}
-.expires-soon {
-  .ingredient__amount::before {
-    content: '➔ ';
-  }
-}
 </style>
