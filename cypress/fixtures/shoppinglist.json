@@ -1,0 +1,10 @@
+{
+  "data": {
+    "items": [
+      {
+        "amount": 1,
+        "product": { "name": "Chocolate", "purchaseUnit": { "name": "bar" } }
+      }
+    ]
+  }
+}

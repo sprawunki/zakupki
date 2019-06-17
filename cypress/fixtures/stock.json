@@ -1,0 +1,53 @@
+{
+  "data": {
+    "locations": [
+      {
+        "name": "Fridge",
+        "products": [
+          {
+            "name": "not-in-stock",
+            "bestBefore": null,
+            "stockLevel": 0,
+            "minStockAmount": 0,
+            "stockUnit": { "name": "g" }
+          },
+          {
+            "name": "out-of-stock",
+            "bestBefore": null,
+            "stockLevel": 0,
+            "minStockAmount": 2,
+            "stockUnit": { "name": "g" }
+          },
+          {
+            "name": "low-stock",
+            "bestBefore": "2100-01-01",
+            "stockLevel": 1,
+            "minStockAmount": 2,
+            "stockUnit": { "name": "pack" }
+          },
+          {
+            "name": "expired",
+            "bestBefore": "1970-01-01",
+            "stockLevel": 1,
+            "minStockAmount": 0,
+            "stockUnit": { "name": "pack" }
+          },
+          {
+            "name": "low-stock & expired",
+            "bestBefore": "1970-01-01",
+            "stockLevel": 1,
+            "minStockAmount": 2,
+            "stockUnit": { "name": "pack" }
+          },
+          {
+            "name": "ok",
+            "bestBefore": "2100-01-01",
+            "stockLevel": 2,
+            "minStockAmount": 2,
+            "stockUnit": { "name": "pack" }
+          }
+        ]
+      }
+    ]
+  }
+}

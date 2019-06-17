@@ -1,0 +1,47 @@
+{
+  "data": {
+    "recipes": [
+      {
+        "name": "Fizz Buzz",
+        "ingredients": [
+          {
+            "amount": 1,
+            "product": {
+              "name": "out-of-stock",
+              "stockUnit": { "name": "g" },
+              "stockLevel": 0,
+              "bestBefore": null
+            }
+          },
+          {
+            "amount": 2,
+            "product": {
+              "name": "expired",
+              "stockUnit": { "name": "opakowanie" },
+              "stockLevel": 2,
+              "bestBefore": "1970-01-01"
+            }
+          },
+          {
+            "amount": 2,
+            "product": {
+              "name": "low-stock",
+              "stockUnit": { "name": "g" },
+              "stockLevel": 1,
+              "bestBefore": "2100-01-01"
+            }
+          },
+          {
+            "amount": 2,
+            "product": {
+              "name": "low-stock & expired",
+              "stockUnit": { "name": "g" },
+              "stockLevel": 1,
+              "bestBefore": "1970-01-01"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
