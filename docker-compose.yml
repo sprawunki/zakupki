@@ -17,6 +17,8 @@ services:
       - ./.eslintrc.js:/src/.eslintrc.js
       - ./nuxt.config.js:/src/nuxt.config.js
     environment:
-      API_URL: http://192.168.0.100:9080
+      - API_URL
+    env_file:
+      - .env
     ports:
       - 3000:3000
