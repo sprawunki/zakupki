@@ -1,17 +1,16 @@
 <template>
-  <li class="product">
+  <li
+    class="product"
+    :class="{
+      'expires-soon': product.expiresSoon,
+      'low-stock': lowStock,
+      'out-of-stock': outOfStock
+    }"
+  >
     <span v-if="product.stockLevel > 0" class="product__amount"
       >{{ product.stockLevel }} {{ product.stockUnit.name }}</span
     >
-    <span
-      class="product__name"
-      :class="{
-        'expires-soon': product.expiresSoon,
-        'low-stock': product.lowStock,
-        'out-of-stock': outOfStock
-      }"
-      >{{ product.name }}</span
-    >
+    <span class="product__name">{{ product.name }}</span>
   </li>
 </template>
 
@@ -21,6 +20,9 @@ export default {
   computed: {
     outOfStock: function() {
       return this.product.stockLevel === 0
+    },
+    lowStock: function() {
+      return this.product.stockLevel < this.product.minStockAmount
     }
   }
 }
@@ -36,6 +38,18 @@ export default {
   margin: 0.25rem 0 0.25rem 34%;
   padding: 0 0.25rem;
 
+  &__name {
+    .low-stock & {
+      text-transform: uppercase;
+    }
+    .out-of-stock & {
+      text-decoration: line-through solid $color-base;
+    }
+    .expires-soon & {
+      font-weight: 900;
+    }
+  }
+
   &__amount {
     position: absolute;
     top: 0;
@@ -50,22 +64,6 @@ export default {
       content: ' ';
       white-space: pre;
     }
-  }
-}
-
-.low-stock {
-  font-weight: 900;
-}
-.out-of-stock {
-  text-decoration: line-through solid $color-highlight-background;
-
-  .has-missing-items & {
-    text-decoration: line-through solid $color-base;
-  }
-}
-.expires-soon {
-  .product__amount::before {
-    content: '➔ ';
   }
 }
 </style>
