@@ -7,7 +7,7 @@ WORKDIR /src
 
 COPY package.json /src/package.json
 COPY package-lock.json /src/package-lock.json
-RUN npm install
+RUN npm install --production
 
 COPY nuxt.config.js /src/nuxt.config.js
 
