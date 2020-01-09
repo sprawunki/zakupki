@@ -1,6 +1,7 @@
 FROM node:10
 
 ENV HOST=0.0.0.0
+ENV PORT=80
 
 WORKDIR /src
 
@@ -20,5 +21,7 @@ COPY static /src/static
 COPY store /src/store
 
 RUN npm run build
+
+EXPOSE 80
 
 CMD ["npm", "start"]

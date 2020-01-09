@@ -43,10 +43,6 @@ export default {
   router: {
     base: process.env.BASE_PATH || '/'
   },
-  server: {
-    port: 3000,
-    host: '0.0.0.0'
-  },
   env: {
     apiUrl: process.env.API_URL
   }
