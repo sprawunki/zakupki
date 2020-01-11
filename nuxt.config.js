@@ -37,6 +37,12 @@ export default {
       }
     ]
   ],
+  axios: {
+    proxy: true
+  },
+  proxy: {
+    '/graphql': process.env.API_PROXY_URL
+  },
   generate: {
     dir: 'public'
   },
