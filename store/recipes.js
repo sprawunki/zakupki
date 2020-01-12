@@ -97,7 +97,7 @@ export const actions = {
 
     const tokens = rootState.settings.tokens
     const query =
-      '{recipes {name ingredients {amount product {name stockUnit {name} stockLevel bestBefore}}}}'
+      '{recipes {name ingredients {amount unit {name} product {name stockUnit {name} stockLevel bestBefore}}}}'
     const q = JSON.stringify({
       query: query,
       tokens: tokens
