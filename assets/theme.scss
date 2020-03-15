@@ -1,5 +1,6 @@
 $color-background: #f1f2f0;
 $color-base: #35342f;
+$color-dim: lighten($color-base, 15%);
 $color-highlight: $color-base;
 $color-highlight-background: #37bbe4;
 $color-dim-background: darken($color-background, 20%);

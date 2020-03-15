@@ -78,10 +78,10 @@ export default {
   position: relative;
 }
 .promoted {
-  background: $color-highlight-background;
-  color: $color-highlight;
+  background: $color-base;
+  color: $color-background;
 }
 .demoted {
-  background: $color-dim-background;
+  color: $color-dim;
 }
 </style>

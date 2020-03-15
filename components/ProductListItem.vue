@@ -35,18 +35,22 @@ export default {
   position: relative;
   display: block;
   font-size: 1rem;
-  margin: 0.25rem 0 0.25rem 34%;
+  line-height: 1;
+  margin: 0.5rem 0 0.5rem 34%;
   padding: 0 0.25rem;
 
   &__name {
+    padding: 0.25rem;
+
     .low-stock & {
-      text-transform: uppercase;
+      color: $color-background;
+      background-color: $color-base;
     }
     .out-of-stock & {
-      text-decoration: line-through solid $color-base;
+      text-decoration: line-through solid;
     }
     .expires-soon & {
-      font-weight: 900;
+      font-weight: bold;
     }
   }
 

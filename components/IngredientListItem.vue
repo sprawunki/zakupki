@@ -39,14 +39,17 @@ export default {
   padding: 0 0.25rem;
 
   &__name {
+    padding: 0.25rem 0;
+
     .low-stock & {
-      text-transform: uppercase;
+      color: $color-background;
+      background-color: $color-base;
     }
     .out-of-stock & {
-      text-decoration: line-through solid $color-base;
+      text-decoration: line-through solid;
     }
     .expires-soon & {
-      font-weight: 900;
+      font-weight: bold;
     }
   }
 
