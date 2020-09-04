@@ -18,7 +18,7 @@
     "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/pwa": "^3.0.0-beta.16",
     "moment": "^2.24.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "nuxt": "^2.8.1",
     "nuxt-env": "^0.1.0",
     "sass-loader": "^8.0.0",
