@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  app:
+  zakupki:
     build:
       context: .
     command: ['npm', 'run', 'dev']
@@ -21,4 +21,25 @@ services:
     env_file:
       - .env
     ports:
-      - 3000:3000
+      - 3000:80
+
+  centrala:
+    image: macieklewkowicz/centrala
+    environment:
+      - GROCY_API_URL_ANONYMOUS=https://demo.grocy.info/api/
+      - GROCY_API_URL=http://grocy/api/
+    ports:
+      - 9080:80
+  grocy:
+    image: linuxserver/grocy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Warsaw
+    ports:
+      - 9081:80
+    volumes:
+      - grocy_config:/config
+
+volumes:
+  grocy_config:
