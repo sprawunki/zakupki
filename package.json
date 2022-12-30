@@ -19,14 +19,14 @@
     "@nuxtjs/pwa": "^3.0.0-beta.16",
     "moment": "^2.24.0",
     "node-sass": "^4.13.0",
-    "nuxt": "^2.8.1",
+    "nuxt": "^3.0.0",
     "nuxt-env": "^0.1.0",
-    "sass-loader": "^8.0.0",
+    "sass-loader": "^13.2.0",
     "vuex-persistedstate": "^2.5.4"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^0.0.1",
-    "@nuxtjs/eslint-module": "^0.0.1",
+    "@nuxtjs/eslint-module": "^3.1.0",
     "babel-eslint": "^10.0.1",
     "cypress": "^3.3.1",
     "eslint": "^5.16.0",
